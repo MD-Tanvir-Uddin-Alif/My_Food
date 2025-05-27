@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, RetrieveAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, RetrieveUpdateAPIView
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
@@ -33,6 +33,15 @@ class CustomUserProfileView(RetrieveAPIView):
     queryset = CustomUser.objects.all()
     permission_classes = [IsAuthenticated]
     serializer_class = CustomUserProfileSerializers
+    
+    def get_object(self):
+        return self.request.user
+
+
+class UpdateCustomUserProfile(RetrieveUpdateAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializers
+    permission_classes = [IsAuthenticated]
     
     def get_object(self):
         return self.request.user
