@@ -29,3 +29,10 @@ class CustomUserSerializers(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
+
+
+class CustomUserProfileSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['id','first_name', 'last_name', 'username', 'email', 'phone_number', 'profile_image','gender', 'address']
+        read_only_field = ['id', 'username', 'email']
