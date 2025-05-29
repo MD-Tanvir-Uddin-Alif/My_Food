@@ -1,4 +1,7 @@
 from rest_framework import serializers
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.password_validation import validate_password
 from .models import CustomUser
 
@@ -36,3 +39,43 @@ class CustomUserProfileSerializers(serializers.ModelSerializer):
         model = CustomUser
         fields = ['id','first_name', 'last_name', 'username', 'email', 'phone_number', 'profile_image','gender', 'address']
         read_only_fields = ['id', 'username', 'email']
+
+
+class CustomTokenObtailPairSerializer(TokenObtainPairSerializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields.clear()
+        self.fields['email'] = serializers.EmailField()
+        self.fields['password'] = serializers.CharField(write_only=True)
+    
+    def validate(self, attrs):
+        email = attrs.get('email')
+        password = attrs.get('password')
+        user = CustomUser.objects.filter(email=email).first()
+        
+        if user is None or not user.check_password(password):
+            raise AuthenticationFailed("No active account found with the given credentials")
+        
+        if not user.is_active:
+            raise AuthenticationFailed("User account is disabled")
+        
+        refresh = RefreshToken.for_user(user)
+        return{
+            'refresh':str(refresh),
+            'access':str(refresh.access_token),
+            # 'email': user.email,
+            # 'username': user.username,
+            # 'role': user.role
+        }
+        
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        
+        token['email'] = user.email
+        token['role'] = user.role
+        
+        return token
