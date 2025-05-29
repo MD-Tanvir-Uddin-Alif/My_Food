@@ -1,12 +1,11 @@
 import React from 'react';
-
 const NavBar = () => {
   return (
     <div>
       <nav className='bg-white/80 backdrop-blur sticky top-0 z-0 p-'>
         <div className='mx-auto flex items-center justify-between px-8'>
           <div className='px-8'>
-            <img className='h-16 w-16' src="" alt="" />
+            <img className='h-16 w-16' src="/images/fork.png" alt="" />
           </div>
 
           <div className='flex items-center space-x-8 px-8 md:space-x-8'>
