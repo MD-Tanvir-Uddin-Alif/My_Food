@@ -92,7 +92,7 @@ const Register = () => {
               <InputField label='Email' id='email' type='email' value={formData.email} onChange={handelChange}/>
               <InputField label='Phone Number' id='phone_number' type='tel' value={formData.phone_number} onChange={handelChange}/>
               <InputField label='Profile Image' id='profile_image' type='file' value={formData.profile_image} onChange={handelChange}/> 
-              <InputField label="Gender"id="gender" value={formData.gender} onChange={handelChange} options={["Male", "Female", "Others"]}/>
+              <InputField label="Gender"id="gender" value={formData.gender} onChange={handelChange} options={[{ label: "Male", value: "M" },{ label: "Female", value: "F" },{ label: "Other", value: "O" },]}/>
             </div>
             <InputField label='Address' id='address' value={formData.address} onChange={handelChange}/>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -128,7 +128,7 @@ const InputField = ({ label, id, type = 'text', value, onChange, options = null 
         >
           <option value="" disabled>Select {label}</option>
           {options.map((option) => (
-            <option key={option} value={option}>{option}</option>
+            <option key={option.value} value={option.value}>{option.label}</option>
           ))}
         </select>
       ) : (
@@ -144,9 +144,6 @@ const InputField = ({ label, id, type = 'text', value, onChange, options = null 
     </div>
   );
 };
-
-
-
 
 
 export default Register;
