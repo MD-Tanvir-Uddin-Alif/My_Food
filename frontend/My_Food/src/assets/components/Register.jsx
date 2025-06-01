@@ -82,6 +82,7 @@ const Register = () => {
 
   return (
     <div className='min-h-screen flex items-center justify-center'>
+      <ToastContainer/>
         <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-2xl">
           <h2 className="text-3xl font-bold mb-6 text-center text-red-700">Register</h2>
           <form onSubmit={handleSubmission} className="space-y-4">
