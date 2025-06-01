@@ -3,6 +3,7 @@ import './index.css'
 import NavBar from './assets/components/NavBar'
 import Home from "./assets/components/Home"
 import Register from "./assets/components/Register"
+import Login from "./assets/components/Login"
 
 function App() {
 
@@ -12,7 +13,7 @@ function App() {
       <NavBar/>
       <Routes>
         <Route path="/" element={<Home/>}></Route>
-        <Route path="login/" element={<Register/>}></Route>
+        <Route path="login/" element={<Login/>}></Route>
       </Routes>
       </HashRouter>
     </div>

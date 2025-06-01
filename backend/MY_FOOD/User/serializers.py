@@ -68,7 +68,7 @@ class CustomTokenObtailPairSerializer(TokenObtainPairSerializer):
             'access':str(refresh.access_token),
             # 'email': user.email,
             # 'username': user.username,
-            # 'role': user.role
+            'role': user.role
         }
         
     @classmethod
