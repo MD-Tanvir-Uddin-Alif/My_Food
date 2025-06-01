@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
 
@@ -16,8 +19,8 @@ const Register = () => {
         
     });
 
-    const [sucess, setsucess] = useState(null);
-    const [error, seterror] = useState(null);
+    // const [sucess, setsucess] = useState(null);
+    // const [error, seterror] = useState(null);
 
     const handelChange = (e)=>{
         setForm({
@@ -28,15 +31,53 @@ const Register = () => {
 
     const handleSubmission = async (e)=>{
         e.preventDefault();
-        seterror('');
-        setsucess('');
+        // seterror('');
+        // setsucess('');
 
         if(formData.password != formData.password2){
-            seterror('password did not match');
+            // seterror('password did not match');
+            toast.error('Password did not match');
             return
         }
 
-        console.log(formData);
+        // console.log(formData);
+
+        try{
+        
+        const formdatatosend = new FormData();
+
+        Object.entries(formData).forEach(([key, value])=>{
+          formdatatosend.append(key, value);
+        });
+
+
+          const responce = await axios.post(`http://127.0.0.1:8000/api/user/register/`,formdatatosend,{
+            headers: {
+              "Content-Type": 'multipart/form-data',
+            },
+          });
+          console.log(responce);
+          if (responce.status === 201 || responce.status === 200){
+            // setsucess('Registration sucessfull!');
+            toast.success('Registrations Sucessfully');
+          }
+          setForm({
+            first_name:'',
+            last_name:'',
+            username:'',
+            email:'',
+            phone_number:'',
+            profile_image:null,
+            gender:'',
+            address:'',
+            password:'',
+            password2:'',
+          });
+        } catch (err) {
+          // seterror(err.responce)
+          toast.error('registrations Failed. Please try again');
+          console.log(err.responce?.data?.message);
+        }
     };
 
   return (
