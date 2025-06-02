@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
+
+  const navigate = useNavigate();
 
     const [formData, setForm] = useState({
         first_name:'',
@@ -59,7 +62,11 @@ const Register = () => {
           console.log(responce);
           if (responce.status === 201 || responce.status === 200){
             // setsucess('Registration sucessfull!');
-            toast.success('Registrations Sucessfully');
+            toast.success('Registrations Sucessfully.', {autoClose: 3000});
+
+            setTimeout(()=>{
+            navigate('/login');
+            },3000)
           }
           setForm({
             first_name:'',
@@ -105,6 +112,10 @@ const Register = () => {
               <button type="submit" className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg text-lg transition-all duration-200">
                 Register
               </button>
+            </div>
+            <div className='flex flex-col items-center text-center'>
+              <p className='text-sm font-medium text-gray-600'>Already have an account?</p>
+              <Link to='/login/' className='text-sm font-medium text-red-600 cursor-pointer'>Login Yourself</Link >
             </div>
           </form>
 </div>

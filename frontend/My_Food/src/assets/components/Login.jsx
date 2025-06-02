@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -70,6 +71,11 @@ const Login = () => {
                     Login
                 </button>
                 </div>
+                <div className='flex flex-col items-center text-center'>
+                    <p className='text-sm font-medium text-gray-600'>Don't have an account?</p>
+                    <Link to='/register/' className='text-sm font-medium text-red-600 cursor-pointer'>Register Yourself</Link >
+                </div>
+
             </form>
         </div>
     </div>
