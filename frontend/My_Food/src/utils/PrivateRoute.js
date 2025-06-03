@@ -1,7 +1,7 @@
 import React, { Children } from "react";
 import { Navigate } from "react-router-dom";
 
-const PrivateRoute = ({children})=>{
+const PrivateRoute = ({Children})=>{
     const accessToken = localStorage.getItem('accessToken');
 
     return accessToken ? Children : <Navigate to='/login'/>

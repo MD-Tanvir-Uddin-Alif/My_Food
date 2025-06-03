@@ -29,15 +29,16 @@ const Login = () => {
                 password: fromData.password
             });
 
-            console.log(response.data)
+            // console.log(response.data)
             const {refresh, access, role} = response.data;
 
             if (refresh && access) {
-            localStorage.setItem('refreshToken', refresh)
-            localStorage.setItem('accessToken', access)
-            localStorage.setItem('role', role)
+            localStorage.setItem('refreshToken', refresh);
+            localStorage.setItem('accessToken', access);
+            localStorage.setItem('role', role);
 
-            toast.success('Login sucessfull')
+            toast.success('Login sucessfull');
+            window.dispatchEvent(new Event('login'));
             }else {
                 toast.error('Login token not provided');
             }
@@ -55,7 +56,7 @@ const Login = () => {
         <ToastContainer/>
         <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
             <h2 className="text-3xl font-bold mb-6 text-center text-red-700">Login</h2>
-            <form onSubmit={handleSubmission} class="space-y-4">
+            <form onSubmit={handleSubmission} className="space-y-4">
                 <div>
                     <label className="block text-sm font-medium text-gray-600">Email</label>
                     <input id='email' value={fromData.email} onChange={handleChange} type="email" name="username" required className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"/>
