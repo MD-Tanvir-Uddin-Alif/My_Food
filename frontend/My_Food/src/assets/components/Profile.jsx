@@ -10,7 +10,7 @@ const Profile = () => {
     useEffect(()=>{
       const ProfileData = async()=>{
         try{
-          const response = await axiosInstance.get('api/usser/profile/');
+          const response = await axiosInstance.get('api/user/profile/');
           console.log(response.data);
         } catch(err){
           console.log(err.response?.data?.message);
@@ -19,6 +19,8 @@ const Profile = () => {
           setLoading(true);
         }
       }
+
+      ProfileData()
     },[]);
 
   return (
