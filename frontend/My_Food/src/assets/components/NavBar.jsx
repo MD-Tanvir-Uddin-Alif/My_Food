@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../utils/axiosInstance';
 const NavBar = () => {
 
@@ -67,7 +67,7 @@ const NavBar = () => {
               </label>
 
               <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-lg py-2 hidden peer-checked:flex flex-col z-10">
-                  <a href="#" className="px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
+                  <Link to='/profile/' className="px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</Link>
                   <button onClick={LogouHandel} className="px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</button>
               </div>
             </div>) :
