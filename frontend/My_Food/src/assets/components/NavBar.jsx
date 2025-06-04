@@ -25,7 +25,10 @@ const NavBar = () => {
 
   const LogouHandel = async()=>{
     try{
-      await axiosInstance.post('/api/user/logout/');
+      const refreshToken = localStorage.getItem('refreshToken');
+      await axiosInstance.post('/api/user/logout/',{
+        refresh : refreshToken,
+      });
 
       localStorage.clear();
       setLogin(false);
