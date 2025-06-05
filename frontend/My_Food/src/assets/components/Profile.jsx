@@ -10,6 +10,8 @@ const Profile = () => {
     const [loading, setLoading] = useState(true);
     // const [editmode, setEdit] = useState(false);
 
+    const role = localStorage.getItem('role');
+
     useEffect(()=>{
       const ProfileData = async()=>{
         try{
@@ -78,6 +80,8 @@ const Profile = () => {
             </Link>
             {/* {editmode && <UpdateProfile user_info={Profile}/>} */}
           </div>
+
+          {role === 'ADMIN' ? <p>Manage Product</p> : null}
         </div>
       </div>
     </div>
