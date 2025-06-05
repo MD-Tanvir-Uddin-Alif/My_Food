@@ -6,6 +6,7 @@ import Register from "./assets/components/Register"
 import Login from "./assets/components/Login"
 import PrivateRoute from "./utils/PrivateRoute"
 import Profile from "./assets/components/Profile"
+import UpdateProfile from "./assets/components/UpdateProfile"
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
         <Route path="login/" element={<Login/>}></Route>
         <Route path="register/" element={<Register/>}></Route>
         <Route path="profile/" element={<PrivateRoute><Profile/></PrivateRoute>}></Route>
+        <Route path="profile/update/" element={<PrivateRoute><UpdateProfile/></PrivateRoute>}></Route>
       </Routes>
       </HashRouter>
     </div>

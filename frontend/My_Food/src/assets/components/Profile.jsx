@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../utils/axiosInstance';
+import UpdateProfile from './UpdateProfile';
+import { Link } from 'react-router-dom';
 
 
 const Profile = () => {
     const [Profile, setProfile] = useState(null);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
+    // const [editmode, setEdit] = useState(false);
 
     useEffect(()=>{
       const ProfileData = async()=>{
@@ -66,7 +69,10 @@ const Profile = () => {
           </div>
 
           <div className="sm:col-span-2 mt-4">
-            <button className="px-6 py-3 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition duration-300 w-full sm:w-auto">Upgrade Profile </button>
+            <Link to='/profile/update/' state={{user_info:Profile}}>
+            <button className="px-6 py-3 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition duration-300 w-full sm:w-auto">Upgrade Profile</button>
+            </Link>
+            {/* {editmode && <UpdateProfile user_info={Profile}/>} */}
           </div>
         </div>
       </div>
