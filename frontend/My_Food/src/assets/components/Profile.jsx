@@ -13,6 +13,7 @@ const Profile = () => {
           const response = await axiosInstance.get('api/user/profile/');
           // console.log(response.data);
           setProfile(response.data);
+          localStorage.setItem('img', response.data.profile_image);
         } catch(err){
           // console.log(err.response?.data?.message);
           setError(err.response?.data?.message || 'Something went wrong');

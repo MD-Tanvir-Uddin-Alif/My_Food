@@ -39,11 +39,19 @@ const Login = () => {
             localStorage.setItem('accessToken', access);
             localStorage.setItem('role', role);
 
-            toast.success('Login sucessfull', {autoClose:3000});
+            const profileRes = await axios.get('http://127.0.0.1:8000/api/user/profile/', {
+                headers: {
+                    Authorization: `Bearer ${access}`
+                }
+            });
+
+            localStorage.setItem('img', profileRes.data.profile_image);
+
+            toast.success('Login sucessfull', {autoClose:2000});
             window.dispatchEvent(new Event('login'));
             setTimeout(()=>{
                 navigate('/profile/');
-            },3000);
+            },2000);
             }else {
                 toast.error('Login token not provided');
             }

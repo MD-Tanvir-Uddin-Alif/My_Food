@@ -6,10 +6,12 @@ const NavBar = () => {
   const navigate = useNavigate(!!localStorage.getItem('accessToken'));
 
   const [isLogin, setLogin] = useState(false);
+  const [image, setImage] = useState('');
 
   useEffect(()=>{
     const checkLogin = ()=>{
       const token = localStorage.getItem('accessToken');
+      setImage(localStorage.getItem('img'));
       setLogin(!!token);
     };
 
@@ -63,7 +65,7 @@ const NavBar = () => {
               <input type="checkbox" id="profile-toggle" className="peer hidden" />
 
               <label for="profile-toggle" className="cursor-pointer">
-                <img src="https://via.placeholder.com/40" alt="Profile" className="w-10 h-10 rounded-full border-2 border-blue-600 shadow"/>
+                <img src={image} alt="Profile" className="w-10 h-10 rounded-full border-2 border-blue-600 shadow"/>
               </label>
 
               <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-lg py-2 hidden peer-checked:flex flex-col z-10">
