@@ -1,11 +1,13 @@
 import axios from 'axios';
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
 const Login = () => {
+
+    const navigate = useNavigate();
     const [fromData, setformData] = useState({
         email:'',
         password:''
@@ -37,8 +39,11 @@ const Login = () => {
             localStorage.setItem('accessToken', access);
             localStorage.setItem('role', role);
 
-            toast.success('Login sucessfull');
+            toast.success('Login sucessfull', {autoClose:3000});
             window.dispatchEvent(new Event('login'));
+            setTimeout(()=>{
+                navigate('/profile/');
+            },3000);
             }else {
                 toast.error('Login token not provided');
             }
