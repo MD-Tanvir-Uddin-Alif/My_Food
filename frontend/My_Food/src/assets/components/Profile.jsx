@@ -56,6 +56,10 @@ const Profile = () => {
             <p className="text-base font-semibold">{Profile.username}</p>
           </div>
           <div>
+            <p className="text-sm font-medium text-gray-500">Gender</p>
+            <p className="text-base font-semibold">{Profile.gender}</p>
+          </div>
+          <div>
             <p className="text-sm font-medium text-gray-500">Email</p>
             <p className="text-base font-semibold">{Profile.email} </p>
           </div>
@@ -70,7 +74,7 @@ const Profile = () => {
 
           <div className="sm:col-span-2 mt-4">
             <Link to='/profile/update/' state={{user_info:Profile}}>
-            <button className="px-6 py-3 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition duration-300 w-full sm:w-auto">Upgrade Profile</button>
+            <button className="px-6 py-3 bg-red-600 text-white rounded-xl shadow-md hover:bg-red-700 transition duration-300 w-full sm:w-auto">Upgrade Profile</button>
             </Link>
             {/* {editmode && <UpdateProfile user_info={Profile}/>} */}
           </div>

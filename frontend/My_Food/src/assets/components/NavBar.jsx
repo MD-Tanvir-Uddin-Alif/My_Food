@@ -65,7 +65,7 @@ const NavBar = () => {
               <input type="checkbox" id="profile-toggle" className="peer hidden" />
 
               <label for="profile-toggle" className="cursor-pointer">
-                <img src={image} alt="Profile" className="w-10 h-10 rounded-full border-2 border-blue-600 shadow"/>
+                <img src={image} alt="Profile" className="w-10 h-10 rounded-full border-2 border-red-600 shadow"/>
               </label>
 
               <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-lg py-2 hidden peer-checked:flex flex-col z-10">
