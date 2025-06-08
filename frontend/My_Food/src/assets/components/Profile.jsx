@@ -35,7 +35,7 @@ const Profile = () => {
     if(!Profile){return <p>No profile is found</p>}
 
   return (
-    <div className='bg-gray-200 min-h-screen flex items-center justify-center'>
+    <div className='bg-red-100 min-h-screen flex items-center justify-center'>
       <div className="max-w-4xl w-full bg-white shadow-xl rounded-2xl p-8 grid grid-cols-1 md:grid-cols-3 gap-6">
     
         <div className="flex flex-col items-center justify-center md:col-span-1">
@@ -81,7 +81,7 @@ const Profile = () => {
             {/* {editmode && <UpdateProfile user_info={Profile}/>} */}
           </div>
 
-          {role === 'ADMIN' ? <p>Manage Product</p> : null}
+          {role === 'ADMIN' ? <Link to="/manage/product/"><p class="text-lg font-semibold text-red-600 mb-4">Manage Product</p></Link> : null}
         </div>
       </div>
     </div>

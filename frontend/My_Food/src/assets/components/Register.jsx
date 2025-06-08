@@ -88,9 +88,9 @@ const Register = () => {
     };
 
   return (
-    <div className='min-h-screen flex items-center justify-center'>
+    <div className='bg-red-100 min-h-screen flex items-center justify-center'>
       <ToastContainer/>
-        <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-2xl">
+        <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-2xl m-5">
           <h2 className="text-3xl font-bold mb-6 text-center text-red-700">Register</h2>
           <form onSubmit={handleSubmission} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -128,7 +128,7 @@ const Register = () => {
 const InputField = ({ label, id, type = 'text', value, onChange, options = null }) => {
   return (
     <div>
-      <label htmlFor={id} className="block text-sm font-medium text-gray-600">{label}</label>
+      <label htmlFor={id} className="block text-sm font-medium text-red-600">{label}</label>
 
       {options ? (
         <select
