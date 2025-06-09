@@ -26,8 +26,8 @@ function App() {
         <Route path="profile/update/" element={<PrivateRoute><UpdateProfile/></PrivateRoute>}></Route>
         <Route path="admin/" element={<PrivateRoute><AdminLayout/></PrivateRoute>}>
           <Route path="products/" element={<ManageProduct/>}></Route>
+          <Route path="categorys/" element={<ManageCategory/>}></Route>
         </Route>
-        {/* <Route path="manage/category/" element={<PrivateRoute><ManageCategory/></PrivateRoute>}></Route> */}
       </Routes>
       </HashRouter>
     </div>
