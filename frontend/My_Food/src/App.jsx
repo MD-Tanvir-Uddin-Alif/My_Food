@@ -11,11 +11,14 @@ import ManageProduct from "./assets/components/ManageProduct"
 import ManageComponent from "./assets/components/ManageCategory"
 import ManageCategory from "./assets/components/ManageCategory"
 import AdminLayout from "./assets/components/AdminLayout"
+import { Toaster } from 'react-hot-toast';
+
 
 function App() {
 
   return (
     <div>
+      <Toaster position="top-center" reverseOrder={false} />
       <HashRouter>
       <NavBar/>
       <Routes>
