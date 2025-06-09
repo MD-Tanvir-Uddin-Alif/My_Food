@@ -1,15 +1,16 @@
 import React from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import { ClipboardList, Plus, Folder } from 'lucide-react';
 
 const AdminLayout = () => {
 
     const location = useLocation();
 
-    const isActive = (path) => location.pathname === path;
+    const isActive = (path) => location.pathname.endsWith(path);
 
       const navItems = [
     // { path: '/admin/add-food', label: 'Add Food', icon: <Plus size={20} /> },
-    // { path: '/admin/products', label: 'View Food', icon: <ClipboardList size={20} /> },
+    { path: '/admin/products/', label: 'View Food', icon: <ClipboardList size={20} /> },
     // { path: '/admin/add-category', label: 'Add Category', icon: <Plus size={20} /> },
     // { path: '/admin/categories', label: 'View Categories', icon: <Folder size={20} /> },
   ]

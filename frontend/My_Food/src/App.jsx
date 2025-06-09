@@ -24,9 +24,10 @@ function App() {
         <Route path="register/" element={<Register/>}></Route>
         <Route path="profile/" element={<PrivateRoute><Profile/></PrivateRoute>}></Route>
         <Route path="profile/update/" element={<PrivateRoute><UpdateProfile/></PrivateRoute>}></Route>
-        <Route path="admin/" element={<PrivateRoute><AdminLayout/></PrivateRoute>}></Route>
-        {/* <Route path="manage/product/" element={<PrivateRoute><ManageProduct/></PrivateRoute>}></Route>
-        <Route path="manage/category/" element={<PrivateRoute><ManageCategory/></PrivateRoute>}></Route> */}
+        <Route path="admin/" element={<PrivateRoute><AdminLayout/></PrivateRoute>}>
+          <Route path="products/" element={<ManageProduct/>}></Route>
+        </Route>
+        {/* <Route path="manage/category/" element={<PrivateRoute><ManageCategory/></PrivateRoute>}></Route> */}
       </Routes>
       </HashRouter>
     </div>
