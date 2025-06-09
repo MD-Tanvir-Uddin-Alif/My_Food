@@ -81,7 +81,7 @@ const Profile = () => {
             {/* {editmode && <UpdateProfile user_info={Profile}/>} */}
           </div>
 
-          {role === 'ADMIN' ? <Link to="/manage/product/"><p class="text-lg font-semibold text-red-600 mb-4">Manage Product</p></Link> : null}
+          {role === 'ADMIN' ? <Link to="/admin/"><p class="text-lg font-semibold text-red-600 mb-4">Manage Product</p></Link> : null}
         </div>
       </div>
     </div>
