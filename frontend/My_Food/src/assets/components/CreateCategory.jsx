@@ -24,36 +24,43 @@ const CreateCategory = () => {
         e.preventDefault();
         console.log(formData);
 
-        // try{
+        const { name, food_image } = formData;
+
+
+        if (!name || !food_image) {
+            toast.error("Please enter category name and select an image.");
+            return;
+        }
+
+        try{
         
-        // const formdatatosend = new FormData();
+        const formdatatosend = new FormData();
 
-        // Object.entries(formData).forEach(([key, value])=>{
-        //   formdatatosend.append(key, value);
-        // });
+        formdatatosend.append("name", name);
+        formdatatosend.append("image", food_image);
 
 
-        //   const responce = await axiosInstance.post('/api/category/',formdatatosend,{
-        //     headers: {
-        //       "Content-Type": 'multipart/form-data',
-        //     },
-        //   });
-        //   console.log(responce);
-        //   if (responce.status === 201 || responce.status === 200){
-        //     toast.success('New category added sucessfully.', {autoClose: 3000});
+          const responce = await axiosInstance.post('/api/category/',formdatatosend,{
+            headers: {
+              "Content-Type": 'multipart/form-data',
+            },
+          });
+          console.log(responce);
+          if (responce.status === 201 || responce.status === 200){
+            toast.success('New category added sucessfully.', {autoClose: 3000});
 
-        //     setTimeout(()=>{
-        //     navigate('/admin/categorys');
-        //     },3000)
-        //   }
-        //   setForm({
-        //     name: '',
-        //     food_image: null,
-        //   });
-        // } catch (err) {
-        //   toast.error('Failed to create Category');
-        //   console.log(err.responce?.data?.message);
-        // }
+            setTimeout(()=>{
+            navigate('/admin/categorys');
+            },3000)
+          }
+          setForm({
+            name: '',
+            food_image: null,
+          });
+        } catch (err) {
+          toast.error('Failed to create Category');
+          console.log(err.responce?.data?.message);
+        }
 
     };
 
@@ -68,7 +75,7 @@ const CreateCategory = () => {
             
             <div>
                 <label for="category-name" className="block text-sm font-medium text-red-700 mb-1">Category Name</label>
-                <input type="text" name="category-name" value={formData.name} onChange={handelChange} id="category-name" className="w-full px-4 py-2 border border-red-600 rounded-lg shadow-sm focus:ring-red-500 focus:border-red-500 transition duration-150 ease-in-out" placeholder="e.g., Electronics" required />
+                <input type="text" name="category-name" value={formData.name} onChange={handelChange} id="name" className="w-full px-4 py-2 border border-red-600 rounded-lg shadow-sm focus:ring-red-500 focus:border-red-500 transition duration-150 ease-in-out" placeholder="e.g., Electronics" required />
             </div>
 
             <div>
@@ -79,9 +86,9 @@ const CreateCategory = () => {
                     <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                     <div className="flex text-sm text-gray-600">
-                    <label for="image-upload" className="relative cursor-pointer bg-white rounded-md font-medium text-red-600 hover:text-red-500 focus-within:outline-none">
+                    <label for="food_image" className="relative cursor-pointer bg-white rounded-md font-medium text-red-600 hover:text-red-500 focus-within:outline-none">
                         <span>Upload a file</span>
-                        <input id="image-upload" name="image-upload" value={formData.food_image} onChange={handelChange} type="file" className="sr-only" accept="image/*" />
+                        <input id="food_image" name="image-upload" onChange={handelChange} type="file" className="" accept="image/*" />
                     </label>
                     <p className="pl-1">or drag and drop</p>
                     </div>
