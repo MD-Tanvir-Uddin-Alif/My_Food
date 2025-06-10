@@ -12,6 +12,7 @@ import ManageComponent from "./assets/components/ManageCategory"
 import ManageCategory from "./assets/components/ManageCategory"
 import AdminLayout from "./assets/components/AdminLayout"
 import { Toaster } from 'react-hot-toast';
+import CreateCategory from "./assets/components/CreateCategory"
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <Route path="admin/" element={<PrivateRoute><AdminLayout/></PrivateRoute>}>
           <Route path="products/" element={<ManageProduct/>}></Route>
           <Route path="categorys/" element={<ManageCategory/>}></Route>
+          <Route path="add-category/" element={<CreateCategory/>}></Route>
         </Route>
       </Routes>
       </HashRouter>

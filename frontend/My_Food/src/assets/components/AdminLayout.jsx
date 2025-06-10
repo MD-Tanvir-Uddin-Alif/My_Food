@@ -11,7 +11,7 @@ const AdminLayout = () => {
       const navItems = [
     // { path: '/admin/add-food', label: 'Add Food', icon: <Plus size={20} /> },
     { path: '/admin/products/', label: 'View Food', icon: <ClipboardList size={20} /> },
-    // { path: '/admin/add-category', label: 'Add Category', icon: <Plus size={20} /> },
+    { path: '/admin/add-category', label: 'Add Category', icon: <Plus size={20} /> },
     { path: '/admin/categorys/', label: 'View Categories', icon: <Folder size={20} /> },
   ]
   return (
