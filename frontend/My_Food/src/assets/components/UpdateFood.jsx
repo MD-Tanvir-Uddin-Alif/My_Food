@@ -1,20 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axiosInstance from '../../utils/axiosInstance';  
+import { ToastContainer, toast } from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css';
-import axiosInstance from '../../utils/axiosInstance';
 
-const AddFood = () => {
+const UpdateFood = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const item = location.state?.item;
 
-  const [categories, setCategories] = useState([]);
-  const [formData, setForm] = useState({
+  const [formData, setForm] = useState(item || {
     name: '',
     price: '',
-    category: '',  
     description: '',
+    category: '',
     image: null,
   });
+  const [categories, setCategories] = useState([]);
+
+  const handleChange = (e) => {
+    const { id, type, files, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [id]: type === 'file' ? files[0] : value,
+    }));
+  };
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -23,19 +33,11 @@ const AddFood = () => {
         setCategories(response.data);
       } catch (err) {
         console.error('Failed to load categories', err);
+        toast.error('Failed to load categories');
       }
     };
-
     fetchCategories();
   }, []);
-
-  const handelChange = (e) => {
-    const { id, type, files, value } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [id]: type === 'file' ? files[0] : value,
-    }));
-  };
 
   const handleSubmission = async (e) => {
     e.preventDefault();
@@ -51,7 +53,7 @@ const AddFood = () => {
 
       formdatatosend.append('category_id', formData.category);
 
-      const response = await axiosInstance.post('/api/food/', formdatatosend, {
+      const response = await axiosInstance.patch(`/api/food/${formData.id}/`, formdatatosend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -60,16 +62,8 @@ const AddFood = () => {
       if (response.status === 201 || response.status === 200) {
         toast.success('Food item added successfully!', { autoClose: 3000 });
         setTimeout(() => {
-          navigate('/admin/products');
+        navigate('/admin/products');
         }, 3000);
-
-        setForm({
-          name: '',
-          price: '',
-          category: '',
-          description: '',
-          image: null,
-        });
       }
     } catch (err) {
       toast.error('Failed to add food. Please try again.');
@@ -82,7 +76,7 @@ const AddFood = () => {
       <ToastContainer />
       <div className="bg-white/80 backdrop-blur-sm shadow-2xl rounded-2xl p-8 w-full max-w-3xl border border-red-100">
         <h2 className="text-4xl font-extrabold text-gray-800 mb-6 text-center bg-gradient-to-r from-red-600 to-red-600 text-transparent bg-clip-text">
-          Add New Food Item
+          Update Food Item
         </h2>
 
         <form onSubmit={handleSubmission} className="space-y-6">
@@ -94,7 +88,7 @@ const AddFood = () => {
               type="text"
               id="name"
               value={formData.name}
-              onChange={handelChange}
+              onChange={handleChange}
               required
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 transition duration-200"
             />
@@ -108,7 +102,7 @@ const AddFood = () => {
               type="number"
               id="price"
               value={formData.price}
-              onChange={handelChange}
+              onChange={handleChange}
               required
               step="0.01"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 transition duration-200"
@@ -122,11 +116,11 @@ const AddFood = () => {
             <textarea
               id="description"
               value={formData.description}
-              onChange={handelChange}
+              onChange={handleChange}
               rows="4"
               required
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 transition duration-200"
-            ></textarea>
+            />
           </div>
 
           <div>
@@ -136,7 +130,7 @@ const AddFood = () => {
             <select
               id="category"
               value={formData.category}
-              onChange={handelChange}
+              onChange={handleChange}
               required
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 transition duration-200"
             >
@@ -157,12 +151,18 @@ const AddFood = () => {
               type="file"
               id="image"
               accept="image/*"
-              onChange={handelChange}
-              required
+              onChange={handleChange}
               className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
                 file:rounded-md file:border-0 file:text-sm file:font-semibold
                 file:bg-red-500 file:text-white hover:file:bg-red-600"
             />
+            {typeof formData.image === 'string' && (
+              <img
+                src={formData.image}
+                alt="Current Food"
+                className="mt-2 w-40 h-40 object-cover rounded"
+              />
+            )}
           </div>
 
           <div className="mt-6">
@@ -170,7 +170,7 @@ const AddFood = () => {
               type="submit"
               className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 shadow-md hover:shadow-lg"
             >
-              Add Food
+              Update Food
             </button>
           </div>
         </form>
@@ -179,4 +179,4 @@ const AddFood = () => {
   );
 };
 
-export default AddFood;
+export default UpdateFood;

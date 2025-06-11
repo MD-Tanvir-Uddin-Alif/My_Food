@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../utils/axiosInstance';
 import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const ManageProduct = () => {
+  const navigate = useNavigate();
+
   const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -81,7 +84,7 @@ const ManageProduct = () => {
                 <p className="text-red-600 font-bold mt-2">${item.price}</p>
               </div>
               <div className="mt-4 flex gap-3">
-                <button className="flex-1 bg-white hover:bg-red-600 text-red-500 hover:text-white font-medium py-2 px-4 rounded-lg transition">
+                <button onClick={()=> navigate('/admin/update-food', {state:{item}})} className="flex-1 bg-white hover:bg-red-600 text-red-500 hover:text-white font-medium py-2 px-4 rounded-lg transition">
                   Update
                 </button>
                 <button onClick={()=> handleDelete(item.id)} className="flex-1 bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition">
