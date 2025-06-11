@@ -37,7 +37,7 @@ const CreateCategory = () => {
         const formdatatosend = new FormData();
 
         formdatatosend.append("name", name);
-        formdatatosend.append("image", food_image);
+        formdatatosend.append("food_image", food_image);
 
 
           const responce = await axiosInstance.post('/api/category/',formdatatosend,{

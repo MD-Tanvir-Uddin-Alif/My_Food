@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import axiosInstance from '../../utils/axiosInstance';
 import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const ManageCategory = () => {
 
+  const navigete = useNavigate();
     const [product, setProduct] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -66,8 +68,8 @@ const ManageCategory = () => {
                     <h3 className="text-lg font-medium text-red-700">{item.name}</h3>
                 </div>
                 <div className="flex gap-2">
-                    <button className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">Update</button>
-                    <button onClick={() => handleDelate(item.id)} className="px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 transition">Delete</button>
+                  <button onClick={()=>navigete('/admin/update-category/', {state:{item}})} className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">Update</button>
+                  <button onClick={() => handleDelate(item.id)} className="px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 transition">Delete</button>
                 </div>
             </div>
             ))}
