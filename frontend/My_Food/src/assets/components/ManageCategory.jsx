@@ -34,7 +34,7 @@ const ManageCategory = () => {
                 onClick={async ()=>{
                     toast.dismiss(t.id);
                     try{
-                        await axiosInstance.delete(`http://127.0.0.1:8000/api/category/${id}/`);
+                        await axiosInstance.delete(`/api/category/${id}/`);
                         setProduct((prev)=> prev.filter((item)=> item.id !== id));
                         toast.success("Category deleted successfully!");
                     }catch (err){
