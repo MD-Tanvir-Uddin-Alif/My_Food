@@ -9,9 +9,9 @@ const AddFood = () => {
 
   const [categories, setCategories] = useState([]);
   const [formData, setForm] = useState({
-    food_name: '',
+    name: '',
     price: '',
-    category: '',
+    category: '',  // Will send as category_id below
     description: '',
     image: null,
   });
@@ -42,9 +42,16 @@ const AddFood = () => {
 
     try {
       const formdatatosend = new FormData();
+
+      // Append all fields except category
       Object.entries(formData).forEach(([key, value]) => {
-        formdatatosend.append(key, value);
+        if (key !== 'category') {
+          formdatatosend.append(key, value);
+        }
       });
+
+      // Append category_id explicitly (required by backend)
+      formdatatosend.append('category_id', formData.category);
 
       const response = await axiosInstance.post('/api/food/', formdatatosend, {
         headers: {
@@ -59,7 +66,7 @@ const AddFood = () => {
         }, 3000);
 
         setForm({
-          food_name: '',
+          name: '',
           price: '',
           category: '',
           description: '',
@@ -74,7 +81,7 @@ const AddFood = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <ToastContainer/>
+      <ToastContainer />
       <div className="bg-white/80 backdrop-blur-sm shadow-2xl rounded-2xl p-8 w-full max-w-3xl border border-red-100">
         <h2 className="text-4xl font-extrabold text-gray-800 mb-6 text-center bg-gradient-to-r from-red-600 to-red-600 text-transparent bg-clip-text">
           Add New Food Item
@@ -82,13 +89,13 @@ const AddFood = () => {
 
         <form onSubmit={handleSubmission} className="space-y-6">
           <div>
-            <label htmlFor="food_name" className="block text-sm font-medium text-red-600 mb-1">
+            <label htmlFor="name" className="block text-sm font-medium text-red-600 mb-1">
               Food Name
             </label>
             <input
               type="text"
-              id="food_name"
-              value={formData.food_name}
+              id="name"
+              value={formData.name}
               onChange={handelChange}
               required
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 transition duration-200"
@@ -155,8 +162,8 @@ const AddFood = () => {
               onChange={handelChange}
               required
               className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
-              file:rounded-md file:border-0 file:text-sm file:font-semibold
-              file:bg-red-500 file:text-white hover:file:bg-red-600"
+                file:rounded-md file:border-0 file:text-sm file:font-semibold
+                file:bg-red-500 file:text-white hover:file:bg-red-600"
             />
           </div>
 
