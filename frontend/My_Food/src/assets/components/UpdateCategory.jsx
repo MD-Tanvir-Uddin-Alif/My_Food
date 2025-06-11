@@ -1,26 +1,78 @@
 import React, { useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import axiosInstance from '../../utils/axiosInstance';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UpdateCategory = () => {
   const location = useLocation();
   const item = location.state?.item;
 
-  const [formdata, setForm] = useState(item)
+  const navigate = useNavigate();
+
+  const [formdata, setForm] = useState(item);
 
   const handelChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setForm(prev => ({
       ...prev,
       [name === 'category-name' ? 'name' : name]: value
-    }))
-  }
+    }));
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const previewUrl = URL.createObjectURL(file);
+      setForm(prev => ({
+        ...prev,
+        food_image: previewUrl,  
+        newImageFile: file       
+      }));
+    }
+  };
+
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+
+    try{
+        
+        const formdatatosend = new FormData();
+        formdatatosend.append('name', formdata.name);
+
+        if (formdata.newImageFile) {
+          formdatatosend.append('food_image', formdata.newImageFile);
+        }
+
+
+
+          const responce = await axiosInstance.patch(`/api/category/${formdata.id}/`,formdatatosend,{
+            headers: {
+              "Content-Type": 'multipart/form-data',
+            },
+          });
+          // console.log(responce);
+          if (responce.status === 201 || responce.status === 200){
+            toast.success('Category Updated Sucessfully.', {autoClose: 3000});
+
+            setTimeout(()=>{
+            navigate('/admin/categorys');
+            },3000)
+          }
+        } catch (err) {
+          // seterror(err.responce)
+          toast.error('updating Failed. Please try again');
+          console.log(err.responce?.data?.message);
+        }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center">
+      <ToastContainer/>
       <div className="w-full max-w-lg bg-white rounded-xl shadow-md p-8 space-y-6">
         <h2 className="text-2xl font-semibold text-red-800 text-center">Update Category</h2>
 
-        <form action="#" method="POST" encType="multipart/form-data" className="space-y-6">
+        <form onSubmit={handleSubmit} encType="multipart/form-data" className="space-y-6">
 
           <div>
             <label htmlFor="category-name" className="block text-sm font-medium text-red-700 mb-1">Category Name</label>
@@ -38,7 +90,7 @@ const UpdateCategory = () => {
           <div>
             <label className="block text-sm font-medium text-red-700 mb-1">Category Image</label>
 
-            {/* Show existing image */}
+            {/* Show existing or newly selected image preview */}
             {formdata.food_image && (
               <img
                 src={formdata.food_image}
@@ -75,6 +127,7 @@ const UpdateCategory = () => {
                       type="file"
                       className="sr-only"
                       accept="image/*"
+                      onChange={handleImageChange}
                     />
                   </label>
                   <p className="pl-1">or drag and drop</p>
