@@ -16,6 +16,7 @@ import CreateCategory from "./assets/components/CreateCategory"
 import UpdateCategory from "./assets/components/UpdateCategory"
 import AddFood from "./assets/components/AddFood"
 import UpdateFood from "./assets/components/UpdateFood"
+import Food from "./assets/components/Food"
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
       <NavBar/>
       <Routes>
         <Route path="/" element={<Home/>}></Route>
+        <Route path="food/" element={<Food/>}></Route>
         <Route path="login/" element={<Login/>}></Route>
         <Route path="register/" element={<Register/>}></Route>
         <Route path="profile/" element={<PrivateRoute><Profile/></PrivateRoute>}></Route>

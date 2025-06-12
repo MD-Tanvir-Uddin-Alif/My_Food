@@ -54,8 +54,8 @@ const NavBar = () => {
           </div>
 
           <div className='flex items-center space-x-8 px-8 md:space-x-8'>
-            <NavLink to="/"className={({isActive})=>`font-medium text-sm transition ${isActive? 'text-red-500' :'text-black'}`}>Home</NavLink>
-            <p className='font-medium text-sm transition text-black'>Food</p>
+            <NavLink to="/" className={({isActive})=>`font-medium text-sm transition ${isActive? 'text-red-500' :'text-black'}`}>Home</NavLink>
+            <NavLink to="/food/" className={({isActive})=>`font-medium text-sm transition ${isActive? 'text-red-500' :'text-black'}`}>Food</NavLink>
             <p className='font-medium text-sm transition text-black'>Extra</p>
           </div>
 

@@ -22,7 +22,7 @@ const AdminLayout = () => {
 
         <nav className="space-y-4">
           {navItems.map((item) => (
-            <Link key={item.path} to={item.path}>
+            <Link key={item.path} to={item.path} className='block'>
               <button
                 className={`flex items-center gap-3 w-full py-3 px-4 rounded-xl border text-left text-sm font-medium transition-all duration-200
                   ${
