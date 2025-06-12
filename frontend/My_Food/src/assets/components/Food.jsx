@@ -35,11 +35,41 @@ const Food = () => {
 
 
   return (
-    <div>
-        <p>{food.map((item)=>(item.name))}</p>
-        <p>this is food components</p>
-        <p>this is food components</p>
+    <div className="bg-gradient-to-br from-pink-50 via-red-100 to-white min-h-screen py-16 px-4 sm:px-6 lg:px-12">
+        <div className="max-w-7xl mx-auto">
+            <h1 className="text-5xl font-extrabold text-center text-red-600 tracking-tight mb-14">
+            🍽️ Our Signature Dishes
+            </h1>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
+            {food.map((item) => (
+                <div
+                key={item.id}
+                className="bg-white/60 backdrop-blur-lg border border-red-100 rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.03]"
+                >
+                <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-full h-44 object-cover rounded-t-2xl"
+                />
+                <div className="p-5">
+                    <h2 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-1">
+                    {item.name}
+                    </h2>
+                    <p className="text-red-500 text-sm font-medium mb-4">
+                    {item.price} TK
+                    </p>
+                    <button className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg font-semibold text-sm tracking-wide transition-all duration-300">
+                    Add to Order
+                    </button>
+                </div>
+                </div>
+            ))}
+            </div>
+        </div>
     </div>
+
+
   )
 }
 
