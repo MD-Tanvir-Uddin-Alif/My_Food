@@ -17,6 +17,7 @@ import UpdateCategory from "./assets/components/UpdateCategory"
 import AddFood from "./assets/components/AddFood"
 import UpdateFood from "./assets/components/UpdateFood"
 import Food from "./assets/components/Food"
+import Details from "./assets/components/Details"
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home/>}></Route>
         <Route path="food/" element={<Food/>}></Route>
+        <Route path="food/details/" element={<Details/>}></Route>
         <Route path="login/" element={<Login/>}></Route>
         <Route path="register/" element={<Register/>}></Route>
         <Route path="profile/" element={<PrivateRoute><Profile/></PrivateRoute>}></Route>

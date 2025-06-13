@@ -1,10 +1,13 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 const Food = () => {
     const [food, setFood] = useState([]);
     const [loading, setLoadning] = useState(true);
     const [error, setError] = useState(null);
+
+    const navigate = useNavigate();
 
     useEffect(()=>{
         const laodFood = async ()=>{
@@ -50,12 +53,13 @@ const Food = () => {
                 <img
                     src={item.image}
                     alt={item.name}
+                    onClick={() => navigate(`/food/details/`,{state:{item}})}
                     className="w-full h-44 object-cover rounded-t-2xl"
                 />
                 <div className="p-5">
-                    <h2 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-1">
+                    <p onClick={() => navigate(`/food/details/`,{state:{item}})} className="text-lg font-semibold text-gray-900 mb-2 line-clamp-1">
                     {item.name}
-                    </h2>
+                    </p>
                     <p className="text-red-500 text-sm font-medium mb-4">
                     {item.price} TK
                     </p>
