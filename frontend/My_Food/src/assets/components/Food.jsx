@@ -63,7 +63,7 @@ const Food = () => {
                     <p className="text-red-500 text-sm font-medium mb-4">
                     {item.price} TK
                     </p>
-                    <button className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg font-semibold text-sm tracking-wide transition-all duration-300">
+                    <button onClick={() => navigate(`/food/add-to-card/`,{state:{item}})} className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg font-semibold text-sm tracking-wide transition-all duration-300">
                     Add to Order
                     </button>
                 </div>
