@@ -1,69 +1,194 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import React, { useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const AddCard = () => {
-    const location = useLocation();
-    const navigate = useNavigate();
-    const newItem = location.state?.item
+  const location = useLocation();
+  const navigate = useNavigate();
+  const newItem = location.state?.item;
 
-    const [cartItems, setCartItems] = useState(()=>{
-        const stored = localStorage.getItem('cart');
-        return stored? JSON.parse(stored): [];
-    });
+  const [cartItems, setCartItems] = useState(() => {
+    const stored = localStorage.getItem('cart');
+    return stored ? JSON.parse(stored) : [];
+  });
 
-    const addRef = useRef(false);
+  const addRef = useRef(false);
 
-    useEffect(()=>{
-        localStorage.setItem('cart', JSON.stringify(cartItems));
-    }, [cartItems]);
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+  }, [cartItems]);
 
-    useEffect(()=>{
-        if(newItem && addRef.current){
-            addRef.current = true;
+  useEffect(() => {
+    if (newItem && !addRef.current) {
+      addRef.current = true;
 
-            setCartItems((prevItems)=>{
-                const exist = prevItems.find(item=> item.id === newItem.id);
-                if(exist){
-                    return prevItems.map(item=> item.id === newItem.id? {...item, quantity: item.quantity + 1}: item);
-                }else{
-                    return [...prevItems, {...newItem, quantity: 1}];
-                }
-            });
-            navigate(location.pathname, {replace: true});
+      setCartItems((prevItems) => {
+        const exist = prevItems.find((item) => item.id === newItem.id);
+        if (exist) {
+          return prevItems.map((item) =>
+            item.id === newItem.id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          );
+        } else {
+          return [...prevItems, { ...newItem, quantity: 1 }];
         }
-    },[newItem, navigate, location.pathname]);
+      });
 
-    const removeItem = (id)=>{
-        setCartItems(prevItem=> prevItem.filter(item=> item.id !== id));
-    };
+      navigate(location.pathname, { replace: true });
+    }
+  }, [newItem, navigate, location.pathname]);
 
-    const decreaseQty = (id)=>{
-        setCartItems(previtem=> previtem.map(item=> item.id === id?
-            {...item, quantity: item.quantity -1}:
-            item
-        ).filter(item=> item.quantity > 0));
-    };
+  const removeItem = (id) => {
+    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  };
 
-    const increaseQty = (id)=>{
-        setCartItems(previtem=> previtem.map(item=> item.id === id?
-            {...item, quantity: item.quantity + 1}:
-            item
-        ).filter(item=> item.quantity > 0));
-    };
-
-    const totalPrice = cartItems.reduce(
-        (total, item)=> total + item.price * item.quantity,
-        0
+  const decreaseQty = (id) => {
+    setCartItems((prevItems) =>
+      prevItems
+        .map((item) =>
+          item.id === id
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        )
+        .filter((item) => item.quantity > 0)
     );
+  };
 
+  const increaseQty = (id) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      )
+    );
+  };
+
+  const subtotal = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
+
+  const tax = parseFloat((subtotal * 0.05).toFixed(2));
+  const total = subtotal + tax;
 
   return (
-    <div>
-        <p>this is add to card for this food{newItem.name}</p>
-        <p>this is add to card for this food</p>
-        <p>this is add to card for this food</p>
-    </div>
-  )
-}
+    <div className="max-w-4xl mx-auto px-4 py-12">
+      <h1 className="text-4xl font-bold text-center mb-12 text-red-600">Your Cart</h1>
 
-export default AddCard
+      <div className="space-y-6">
+        {cartItems.map((item) => (
+          <div
+            key={item.id}
+            className="flex items-center justify-between bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition"
+          >
+            <div className="flex items-center space-x-4">
+              {/* Product Image */}
+              <img
+                src={item.image}
+                alt={item.name}
+                className="w-16 h-16 object-cover rounded-xl border"
+              />
+              <div>
+                <h2 className="text-lg font-semibold text-gray-800">{item.name}</h2>
+                <p className="text-sm text-gray-500">{item.price} TK each</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3">
+              <button
+                onClick={() => decreaseQty(item.id)}
+                className="w-8 h-8 flex items-center justify-center border rounded-full text-red-600 hover:bg-red-100 border-red-400"
+              >
+                -
+              </button>
+              <span className="w-8 text-center font-medium">{item.quantity}</span>
+              <button
+                onClick={() => increaseQty(item.id)}
+                className="w-8 h-8 flex items-center justify-center border rounded-full text-red-600 hover:bg-red-100 border-red-400"
+              >
+                +
+              </button>
+              <button
+                onClick={() => removeItem(item.id)}
+                className="text-red-600 hover:text-red-800 transition"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-8 text-center">
+        <button
+          className="px-6 py-2 bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition"
+        >
+          + Add More Items
+        </button>
+      </div>
+
+      <div className="mt-12 bg-white p-6 rounded-2xl shadow-md">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-800">Order Summary</h2>
+
+        <div className="space-y-2 mb-4 text-gray-700">
+          <div className="flex justify-between">
+            <span>Subtotal:</span>
+            <span>{subtotal} TK</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Tax (5%):</span>
+            <span>{tax} TK</span>
+          </div>
+          <div className="flex justify-between font-bold text-lg pt-2 border-t border-gray-200">
+            <span>Total:</span>
+            <span className="text-red-600">{total} TK</span>
+          </div>
+        </div>
+
+        <div className="mt-6">
+          <h3 className="font-medium mb-2 text-gray-800">Payment Method</h3>
+          <div className="space-y-3">
+            <label className="flex items-center space-x-2 p-3 border rounded-lg cursor-pointer hover:bg-red-50">
+              <input
+                type="radio"
+                name="payment"
+                className="text-red-600"
+                defaultChecked
+              />
+              <span>Cash on Delivery</span>
+            </label>
+            <label className="flex items-center space-x-2 p-3 border rounded-lg cursor-pointer hover:bg-red-50">
+              <input
+                type="radio"
+                name="payment"
+                className="text-red-600"
+              />
+              <span>Online Payment</span>
+            </label>
+          </div>
+        </div>
+
+        <button
+          className="mt-6 w-full py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition font-semibold text-lg"
+        >
+          Proceed to Checkout
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default AddCard;

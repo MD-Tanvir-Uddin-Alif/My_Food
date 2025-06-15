@@ -24,7 +24,7 @@ import AddCard from "./assets/components/AddCard"
 function App() {
 
   return (
-    <div>
+    <div className="bg-red-50">
       <Toaster position="top-center" reverseOrder={false} />
       <HashRouter>
       <NavBar/>
