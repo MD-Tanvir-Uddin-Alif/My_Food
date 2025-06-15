@@ -3,7 +3,8 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.password_validation import validate_password
-from .models import CustomUser
+from .models import CustomUser, OrderItemModel, OrderModel
+from Food.models import FoodModel
 
 
 class CustomUserSerializers(serializers.ModelSerializer):
@@ -79,3 +80,32 @@ class CustomTokenObtailPairSerializer(TokenObtainPairSerializer):
         token['role'] = user.role
         
         return token
+
+
+
+class OrderItemSerializer(serializers.ModelSerializer):
+    food_name = serializers.CharField(source='food.name', read_only=True)
+    food_image = serializers.ImageField(source='food.image', read_only=True)
+    
+    class Meta:
+        model = OrderItemModel
+        fields = ['id', 'food', 'food_name', 'food_image', 'quantity', 'price']
+        
+
+class OrderSerializer(serializers.ModelSerializer):
+    items = OrderItemSerializer(many=True)
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
+    class Meta:
+        model = OrderModel
+        fields = [
+            'id', 'user', 'payment_method', 'transaction_id',
+            'subtotal', 'tax', 'total', 'status', 'created_at', 'items'
+        ]
+
+    def create(self, validated_data):
+        items_data = validated_data.pop('items')
+        order = OrderModel.objects.create(**validated_data)
+        for item_data in items_data:
+            OrderItemModel.objects.create(order=order, **item_data)
+        return order
