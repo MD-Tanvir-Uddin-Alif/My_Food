@@ -56,7 +56,8 @@ class OrderModel(models.Model):
     subtotal =models.DecimalField(max_digits=10, decimal_places=2)
     tax = models.DecimalField(max_digits=10, decimal_places=2)
     total = models.DecimalField(max_digits=10, decimal_places=2)
-    status = models.CharField(max_length=10, choices=PAYMENT_STATUS)\
+    status = models.CharField(max_length=10, choices=PAYMENT_STATUS)
+    created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return f"order {self.id} by {self.user.email}"
@@ -65,7 +66,7 @@ class OrderModel(models.Model):
 class OrderItemModel(models.Model):
     order = models.ForeignKey(OrderModel, related_name='items', on_delete=models.CASCADE)
     food = models.ForeignKey(FoodModel, on_delete=models.SET_NULL, null=True)
-    quantity = models.PositiveIntegerFiel()
+    quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=8, decimal_places=2)
     
     def __str__(self):

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser
+from .models import CustomUser, OrderItemModel, OrderModel
 # Register your models here.
 
 @admin.register(CustomUser)
@@ -14,3 +14,19 @@ class CustomUserModelAdmin(admin.ModelAdmin):
             obj.set_password(raw_password)
         super().save_model(request, obj, form, change)
 
+class OrderItemInline(admin.TabularInline):
+    model = OrderItemModel
+    extra = 0
+
+
+@admin.register(OrderModel)
+class OrderModelAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'payment_method', 'total', 'status', 'created_at']
+    list_filter = ['payment_method', 'status', 'created_at']
+    search_fields = ['user__email', 'transaction_id']
+    inlines = [OrderItemInline]
+
+
+@admin.register(OrderItemModel)
+class OrderItemModelAdmin(admin.ModelAdmin):
+    list_display = ['order', 'food', 'quantity', 'price']
