@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddCard = () => {
   const location = useLocation();
@@ -12,7 +14,6 @@ const AddCard = () => {
   });
 
   const [paymentMethod, setPaymentMethod] = useState('cash');
-
   const addRef = useRef(false);
 
   useEffect(() => {
@@ -48,9 +49,7 @@ const AddCard = () => {
     setCartItems((prevItems) =>
       prevItems
         .map((item) =>
-          item.id === id
-            ? { ...item, quantity: item.quantity - 1 }
-            : item
+          item.id === id ? { ...item, quantity: item.quantity - 1 } : item
         )
         .filter((item) => item.quantity > 0)
     );
@@ -59,9 +58,7 @@ const AddCard = () => {
   const increaseQty = (id) => {
     setCartItems((prevItems) =>
       prevItems.map((item) =>
-        item.id === id
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
       )
     );
   };
@@ -70,23 +67,27 @@ const AddCard = () => {
     (total, item) => total + item.price * item.quantity,
     0
   );
-
   const tax = parseFloat((subtotal * 0.05).toFixed(2));
   const total = subtotal + tax;
 
   const handleCheckout = async () => {
+    if (cartItems.length === 0) {
+      toast.error("Please add at least one item to your cart.");
+      return;
+    }
+
     const orderData = {
       payment_method: paymentMethod,
       transaction_id: null,
-      subtotal: subtotal,
-      tax: tax,
-      total: total,
-      status: "pending",
+      subtotal,
+      tax,
+      total,
+      status: "paid",
       items: cartItems.map(item => ({
         food: item.id,
         quantity: item.quantity,
-        price: item.price
-      }))
+        price: item.price,
+      })),
     };
 
     try {
@@ -94,29 +95,30 @@ const AddCard = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}` // if using JWT
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
         },
-        body: JSON.stringify(orderData)
+        body: JSON.stringify(orderData),
       });
 
       if (response.ok) {
-        alert('Order placed successfully!');
+        toast.success("Order placed successfully!");
         setCartItems([]);
         localStorage.removeItem('cart');
-        navigate('/success'); // redirect to success page
+        navigate('/profile/');
       } else {
         const error = await response.json();
         console.error(error);
-        alert('Failed to place order.');
+        toast.error("Failed to place order.");
       }
     } catch (err) {
       console.error(err);
-      alert('Something went wrong.');
+      toast.error("Something went wrong.");
     }
   };
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
+      <ToastContainer />
       <h1 className="text-4xl font-bold text-center mb-12 text-red-600">Your Cart</h1>
 
       <div className="space-y-6">
