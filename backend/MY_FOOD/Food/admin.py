@@ -9,5 +9,5 @@ class CategoryModelAdmin(admin.ModelAdmin):
 
 @admin.register(FoodModel)
 class FoodModelAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'category', 'created_at', 'updated_at')
+    list_display = ('id','name', 'price', 'category', 'created_at', 'updated_at')
     search_fields = ('name', 'category',)

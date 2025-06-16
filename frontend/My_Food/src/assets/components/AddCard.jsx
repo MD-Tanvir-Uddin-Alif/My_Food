@@ -11,6 +11,8 @@ const AddCard = () => {
     return stored ? JSON.parse(stored) : [];
   });
 
+  const [paymentMethod, setPaymentMethod] = useState('cash');
+
   const addRef = useRef(false);
 
   useEffect(() => {
@@ -72,6 +74,47 @@ const AddCard = () => {
   const tax = parseFloat((subtotal * 0.05).toFixed(2));
   const total = subtotal + tax;
 
+  const handleCheckout = async () => {
+    const orderData = {
+      payment_method: paymentMethod,
+      transaction_id: null,
+      subtotal: subtotal,
+      tax: tax,
+      total: total,
+      status: "pending",
+      items: cartItems.map(item => ({
+        food: item.id,
+        quantity: item.quantity,
+        price: item.price
+      }))
+    };
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/user/orders/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}` // if using JWT
+        },
+        body: JSON.stringify(orderData)
+      });
+
+      if (response.ok) {
+        alert('Order placed successfully!');
+        setCartItems([]);
+        localStorage.removeItem('cart');
+        navigate('/success'); // redirect to success page
+      } else {
+        const error = await response.json();
+        console.error(error);
+        alert('Failed to place order.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Something went wrong.');
+    }
+  };
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
       <h1 className="text-4xl font-bold text-center mb-12 text-red-600">Your Cart</h1>
@@ -83,7 +126,6 @@ const AddCard = () => {
             className="flex items-center justify-between bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition"
           >
             <div className="flex items-center space-x-4">
-              {/* Product Image */}
               <img
                 src={item.image}
                 alt={item.name}
@@ -134,6 +176,7 @@ const AddCard = () => {
 
       <div className="mt-8 text-center">
         <button
+          onClick={() => navigate('/food/')}
           className="px-6 py-2 bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition"
         >
           + Add More Items
@@ -165,8 +208,10 @@ const AddCard = () => {
               <input
                 type="radio"
                 name="payment"
+                value="cash"
+                checked={paymentMethod === 'cash'}
+                onChange={(e) => setPaymentMethod(e.target.value)}
                 className="text-red-600"
-                defaultChecked
               />
               <span>Cash on Delivery</span>
             </label>
@@ -174,6 +219,9 @@ const AddCard = () => {
               <input
                 type="radio"
                 name="payment"
+                value="online"
+                checked={paymentMethod === 'online'}
+                onChange={(e) => setPaymentMethod(e.target.value)}
                 className="text-red-600"
               />
               <span>Online Payment</span>
@@ -182,6 +230,7 @@ const AddCard = () => {
         </div>
 
         <button
+          onClick={handleCheckout}
           className="mt-6 w-full py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition font-semibold text-lg"
         >
           Proceed to Checkout
