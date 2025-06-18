@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../utils/axiosInstance';
 import UpdateProfile from './UpdateProfile';
 import { Link } from 'react-router-dom';
+import UserOrder from './UserOrder';
 
 
 const Profile = () => {
@@ -84,6 +85,7 @@ const Profile = () => {
           {role === 'ADMIN' ? <Link to="/admin/"><p class="text-lg font-semibold text-red-600 mb-4">Manage Product</p></Link> : null}
         </div>
       </div>
+      <UserOrder/>
     </div>
   )
 }
