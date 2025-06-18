@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axiosInstance from '../../utils/axiosInstance'; // Make sure this is set up for auth
+import axiosInstance from '../../utils/axiosInstance'; 
 
 const UserOrder = () => {
   const [orders, setOrders] = useState([]);
@@ -7,7 +7,7 @@ const UserOrder = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axiosInstance.get('/api/user/orders');
+        const response = await axiosInstance.get('/api/user/orders/');
         setOrders(response.data);
       } catch (error) {
         console.error('Error fetching orders:', error);
@@ -18,7 +18,10 @@ const UserOrder = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen p-6">
+        {/* {orders.map((item, index) => (
+    <p key={index}>৳{item.total}</p>  // or item.price if that's the field
+  ))} */}
       <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-xl p-6 border border-red-100">
         <h2 className="text-3xl font-extrabold text-gray-800 mb-6 border-b-2 border-red-500 inline-block pb-1">
           My Orders
