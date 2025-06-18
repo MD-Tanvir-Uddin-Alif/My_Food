@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axiosInstance from '../../utils/axiosInstance';  
-import { ToastContainer, toast } from 'react-toastify'; 
+import axiosInstance from '../../utils/axiosInstance';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const UpdateFood = () => {
@@ -9,13 +9,15 @@ const UpdateFood = () => {
   const location = useLocation();
   const item = location.state?.item;
 
-  const [formData, setForm] = useState(item || {
-    name: '',
-    price: '',
-    description: '',
-    category: '',
-    image: null,
+  const [formData, setForm] = useState({
+    id: item?.id || '',
+    name: item?.name || '',
+    price: item?.price || '',
+    description: item?.description || '',
+    category: item?.category?.id || item?.category || '', 
+    image: item?.image || null,
   });
+
   const [categories, setCategories] = useState([]);
 
   const handleChange = (e) => {
@@ -45,13 +47,17 @@ const UpdateFood = () => {
     try {
       const formdatatosend = new FormData();
 
-      Object.entries(formData).forEach(([key, value]) => {
-        if (key !== 'category') {
+      for (const [key, value] of Object.entries(formData)) {
+        if (key === 'image') {
+          if (value instanceof File) {
+            formdatatosend.append('image', value);
+          }
+        } else if (key === 'category') {
+          formdatatosend.append('category_id', value);
+        } else {
           formdatatosend.append(key, value);
         }
-      });
-
-      formdatatosend.append('category_id', formData.category);
+      }
 
       const response = await axiosInstance.patch(`/api/food/${formData.id}/`, formdatatosend, {
         headers: {
@@ -59,14 +65,14 @@ const UpdateFood = () => {
         },
       });
 
-      if (response.status === 201 || response.status === 200) {
-        toast.success('Food item added successfully!', { autoClose: 3000 });
+      if (response.status === 200 || response.status === 201) {
+        toast.success('Food item updated successfully!', { autoClose: 3000 });
         setTimeout(() => {
-        navigate('/admin/products');
+          navigate('/admin/products');
         }, 3000);
       }
     } catch (err) {
-      toast.error('Failed to add food. Please try again.');
+      toast.error('Failed to update food. Please try again.');
       console.error(err.response?.data);
     }
   };
@@ -81,23 +87,19 @@ const UpdateFood = () => {
 
         <form onSubmit={handleSubmission} className="space-y-6">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-red-600 mb-1">
-              Food Name
-            </label>
+            <label htmlFor="name" className="block text-sm font-medium text-red-600 mb-1">Food Name</label>
             <input
               type="text"
               id="name"
               value={formData.name}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 transition duration-200"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg"
             />
           </div>
 
           <div>
-            <label htmlFor="price" className="block text-sm font-medium text-red-600 mb-1">
-              Price
-            </label>
+            <label htmlFor="price" className="block text-sm font-medium text-red-600 mb-1">Price</label>
             <input
               type="number"
               id="price"
@@ -105,34 +107,30 @@ const UpdateFood = () => {
               onChange={handleChange}
               required
               step="0.01"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 transition duration-200"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg"
             />
           </div>
 
           <div>
-            <label htmlFor="description" className="block text-sm font-medium text-red-600 mb-1">
-              Description
-            </label>
+            <label htmlFor="description" className="block text-sm font-medium text-red-600 mb-1">Description</label>
             <textarea
               id="description"
               value={formData.description}
               onChange={handleChange}
               rows="4"
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 transition duration-200"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg"
             />
           </div>
 
           <div>
-            <label htmlFor="category" className="block text-sm font-medium text-red-600 mb-1">
-              Category
-            </label>
+            <label htmlFor="category" className="block text-sm font-medium text-red-600 mb-1">Category</label>
             <select
               id="category"
               value={formData.category}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 transition duration-200"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg"
             >
               <option value="">Select a category</option>
               {categories.map((cat) => (
@@ -144,17 +142,13 @@ const UpdateFood = () => {
           </div>
 
           <div>
-            <label htmlFor="image" className="block text-sm font-medium text-red-600 mb-1">
-              Food Image
-            </label>
+            <label htmlFor="image" className="block text-sm font-medium text-red-600 mb-1">Food Image</label>
             <input
               type="file"
               id="image"
               accept="image/*"
               onChange={handleChange}
-              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
-                file:rounded-md file:border-0 file:text-sm file:font-semibold
-                file:bg-red-500 file:text-white hover:file:bg-red-600"
+              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-red-500 file:text-white hover:file:bg-red-600"
             />
             {typeof formData.image === 'string' && (
               <img
@@ -168,7 +162,7 @@ const UpdateFood = () => {
           <div className="mt-6">
             <button
               type="submit"
-              className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 shadow-md hover:shadow-lg"
+              className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg"
             >
               Update Food
             </button>
