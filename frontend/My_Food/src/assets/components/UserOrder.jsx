@@ -21,41 +21,62 @@ const UserOrder = () => {
   const downloadOrder = (order) => {
   const { id, created_at, subtotal, tax, total, items } = order;
 
-    const doc = new jsPDF();
+  const doc = new jsPDF();
+  let y = 20;
 
-  let y = 10;
-
-  doc.setFontSize(14);
-  doc.text(`Order ID: ${id}`, 10, y);
+  doc.setFontSize(18);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Order Receipt', 105, y, { align: 'center' });
   y += 10;
-  doc.text(`Date: ${new Date(created_at).toLocaleString()}`, 10, y);
-  y += 10;
-  doc.text(`Subtotal: ৳${subtotal}`, 10, y);
-  y += 10;
-  doc.text(`Tax: ৳${tax}`, 10, y);
-  y += 10;
-  doc.text(`Total: ৳${total}`, 10, y);
-  y += 15;
 
   doc.setFontSize(12);
-  doc.text('Items:', 10, y);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(80, 80, 80);
+  doc.text(`Order ID: #${id}`, 20, y);
+  y += 7;
+  doc.text(`Date: ${new Date(created_at).toLocaleString()}`, 20, y);
+  y += 7;
+  doc.text(`Status: Paid`, 20, y);
   y += 10;
 
-  items.forEach((item) => {
-    doc.text(
-      `- ${item.food_name} | Qty: ${item.quantity} | Price: ৳${item.price}`,
-      10,
-      y
-    );
+  doc.setFont('helvetica', 'bold');
+  doc.setFillColor(240, 240, 240); 
+  doc.rect(20, y, 170, 10, 'F');
+  doc.text('Food', 22, y + 7);
+  doc.text('Qty', 110, y + 7);
+  doc.text('Price (৳)', 150, y + 7);
+  y += 12;
+
+  doc.setFont('helvetica', 'normal');
+  items.forEach(item => {
+    doc.text(item.food_name, 22, y);
+    doc.text(`${item.quantity}`, 112, y);
+    doc.text(`${item.price}`, 152, y);
     y += 8;
-    if (y > 280) { 
+
+    if (y > 270) {
       doc.addPage();
-      y = 10;
+      y = 20;
     }
   });
 
+  y += 10;
+  doc.setFont('helvetica', 'bold');
+  doc.text(`Subtotal: ৳${subtotal}`, 130, y);
+  y += 7;
+  doc.text(`Tax: ৳${tax}`, 130, y);
+  y += 7;
+  doc.text(`Total: ৳${total}`, 130, y);
+  y += 10;
+
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'italic');
+  doc.setTextColor(100);
+  doc.text('Thank you for your order!', 105, y, { align: 'center' });
+
   doc.save(`order_${id}.pdf`);
-    };
+};
+
 
 
   return (
