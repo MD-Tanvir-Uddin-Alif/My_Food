@@ -26,33 +26,38 @@ const ManageCategory = () => {
   }, []);
 
   const handleDelate = async(id)=>{
-    toast.custom((t)=>(
-        <span>
-            Are You Sure You want to delete?
-            <div className="mt-2 flex justify-end gap-2">
-                <button
-                onClick={async ()=>{
-                    toast.dismiss(t.id);
-                    try{
-                        await axiosInstance.delete(`/api/category/${id}/`);
-                        setProduct((prev)=> prev.filter((item)=> item.id !== id));
-                        toast.success("Category deleted successfully!");
-                    }catch (err){
+    toast.custom((t) => (
+  <div className="bg-white rounded-xl shadow-lg p-4 w-[320px] border border-gray-200">
+    <h3 className="text-lg font-semibold text-red-600">Confirm Deletion</h3>
+    <p className="text-sm text-gray-700 mt-2">
+      Are you sure you want to delete this category? This action cannot be undone.
+    </p>
+    <div className="mt-4 flex justify-end gap-2">
+      <button
+        onClick={async () => {
+          toast.dismiss(t.id);
+          try {
+            await axiosInstance.delete(`/api/category/${id}/`);
+            setProduct((prev) => prev.filter((item) => item.id !== id));
+            toast.success("Category deleted successfully!");
+          } catch (err) {
+            toast.error("Delete failed!");
+          }
+        }}
+        className="bg-red-600 hover:bg-red-700 text-white px-4 py-1.5 rounded-md text-sm transition duration-200"
+      >
+        Yes, Delete
+      </button>
+      <button
+        onClick={() => toast.dismiss(t.id)}
+        className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-1.5 rounded-md text-sm transition duration-200"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+), { duration: Infinity });
 
-                        toast.error("Delete failed!");
-                    };
-                }}
-                className="bg-red-500 text-white px-2 py-1 rounded text-sm"
-                >Yes</button>
-                <button
-                onClick={()=> toast.dismiss(t.id)}
-                className="bg-gray-200 px-2 py-1 rounded text-sm"
-                >
-                    No
-                </button>
-            </div>
-        </span>
-    ),{duration: Infinity});
   };
 
   if (loading) {

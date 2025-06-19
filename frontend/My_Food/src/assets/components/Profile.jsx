@@ -30,7 +30,7 @@ const Profile = () => {
   if (!profile) return <p>No profile found</p>;
 
   return (
-    <div className="bg-red-100 min-h-screen flex flex-col items-center justify-start py-10">
+    <div className=" min-h-screen flex flex-col items-center justify-start py-10">
       <div className="max-w-4xl w-full bg-white shadow-xl rounded-2xl p-8 grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="flex flex-col items-center justify-center md:col-span-1">
           <img

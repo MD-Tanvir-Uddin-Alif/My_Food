@@ -38,7 +38,7 @@ const Food = () => {
 
 
   return (
-    <div className="bg-gradient-to-br from-pink-50 via-red-100 to-white min-h-screen py-16 px-4 sm:px-6 lg:px-12">
+    <div className="bg-gradient-to-br min-h-screen py-16 px-4 sm:px-6 lg:px-12">
         <div className="max-w-7xl mx-auto">
             <h1 className="text-5xl font-extrabold text-center text-red-600 tracking-tight mb-14">
             🍽️ Our Signature Dishes

@@ -88,7 +88,7 @@ const Register = () => {
     };
 
   return (
-    <div className='bg-red-100 min-h-screen flex items-center justify-center'>
+    <div className='min-h-screen flex items-center justify-center'>
       <ToastContainer/>
         <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-2xl m-5">
           <h2 className="text-3xl font-bold mb-6 text-center text-red-700">Register</h2>

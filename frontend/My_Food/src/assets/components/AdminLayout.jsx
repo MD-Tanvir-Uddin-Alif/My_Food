@@ -16,7 +16,6 @@ const AdminLayout = () => {
   ]
   return (
     <div className="flex min-h-screen">
-      {/* Sidebar */}
       <aside className="w-64 bg-white shadow-xl p-6 space-y-8 border-r border-red-200">
         <h2 className="text-3xl font-bold text-red-600">🍽️ Food Admin</h2>
 
@@ -39,7 +38,6 @@ const AdminLayout = () => {
         </nav>
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 bg-red-50 p-8 overflow-y-auto">
         <Outlet />
       </main>
