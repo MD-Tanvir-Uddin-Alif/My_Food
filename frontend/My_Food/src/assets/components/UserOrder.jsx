@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../utils/axiosInstance'; 
+import jsPDF from 'jspdf';
 
 const UserOrder = () => {
   const [orders, setOrders] = useState([]);
@@ -16,6 +17,46 @@ const UserOrder = () => {
 
     fetchOrders();
   }, []);
+
+  const downloadOrder = (order) => {
+  const { id, created_at, subtotal, tax, total, items } = order;
+
+    const doc = new jsPDF();
+
+  let y = 10;
+
+  doc.setFontSize(14);
+  doc.text(`Order ID: ${id}`, 10, y);
+  y += 10;
+  doc.text(`Date: ${new Date(created_at).toLocaleString()}`, 10, y);
+  y += 10;
+  doc.text(`Subtotal: ৳${subtotal}`, 10, y);
+  y += 10;
+  doc.text(`Tax: ৳${tax}`, 10, y);
+  y += 10;
+  doc.text(`Total: ৳${total}`, 10, y);
+  y += 15;
+
+  doc.setFontSize(12);
+  doc.text('Items:', 10, y);
+  y += 10;
+
+  items.forEach((item) => {
+    doc.text(
+      `- ${item.food_name} | Qty: ${item.quantity} | Price: ৳${item.price}`,
+      10,
+      y
+    );
+    y += 8;
+    if (y > 280) { 
+      doc.addPage();
+      y = 10;
+    }
+  });
+
+  doc.save(`order_${id}.pdf`);
+    };
+
 
   return (
     <div className="min-h-screen p-6">
@@ -42,10 +83,10 @@ const UserOrder = () => {
                 </div>
                 <div className="text-gray-900 font-bold text-lg">৳{order.total}</div>
                 <div className="flex gap-2">
-                  <button className="px-4 py-2 border border-red-500 text-red-600 font-semibold text-sm rounded-lg hover:bg-red-500 hover:text-white transition">
+                  {/* <button className="px-4 py-2 border border-red-500 text-red-600 font-semibold text-sm rounded-lg hover:bg-red-500 hover:text-white transition">
                     View
-                  </button>
-                  <button className="px-4 py-2 bg-red-500 text-white font-semibold text-sm rounded-lg hover:bg-red-600 transition">
+                  </button> */}
+                  <button onClick={()=> downloadOrder(order)} className="px-4 py-2 bg-red-500 text-white font-semibold text-sm rounded-lg hover:bg-red-600 transition">
                     Download
                   </button>
                 </div>
