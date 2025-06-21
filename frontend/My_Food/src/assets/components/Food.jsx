@@ -1,80 +1,102 @@
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 const Food = () => {
-    const [food, setFood] = useState([]);
-    const [loading, setLoadning] = useState(true);
-    const [error, setError] = useState(null);
+  const [food, setFood] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  useEffect(() => {
+    const loadFood = async () => {
+      try {
+        const res = await axios.get('http://127.0.0.1:8000/api/food/');
+        setFood(res.data);
+        setError(null);
+      } catch (err) {
+        setError(err || 'Something went wrong');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    useEffect(()=>{
-        const laodFood = async ()=>{
-            try{
-                const res = await axios.get('http://127.0.0.1:8000/api/food/');
-                setFood(res.data);
-                setError(null);
-            }catch(err){
-                setError(err || 'something went wrong');
-                console.log(err);
-            }finally{
-                setLoadning(false);
-            }
-        };
+    loadFood();
+  }, []);
 
-        laodFood();
-    },[]);
-
-    if (loading) {
+  if (loading) {
     return (
-        <div className="flex flex-col items-center justify-center h-64">
-            <p className="text-lg text-gray-600 mb-4">Loading food data...</p>
-            <div className="w-10 h-10 border-4 border-t-transparent border-blue-500 rounded-full animate-spin"></div>
-        </div>
+      <div className="flex flex-col items-center justify-center h-64">
+        <p className="text-lg text-gray-600 mb-4">Loading food data...</p>
+        <div className="w-10 h-10 border-4 border-t-transparent border-blue-500 rounded-full animate-spin"></div>
+      </div>
     );
-}
-
-
+  }
 
   return (
-    <div className="bg-gradient-to-br min-h-screen py-16 px-4 sm:px-6 lg:px-12">
-        <div className="max-w-7xl mx-auto">
-            <h1 className="text-5xl font-extrabold text-center text-red-600 tracking-tight mb-14">
-            🍽️ Our Signature Dishes
-            </h1>
+    <div className=" min-h-screen py-10 px-4 sm:px-6 lg:px-12">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-4xl font-extrabold text-center text-red-600 tracking-tight mb-12">
+          🍽️ Our Signature Dishes
+        </h1>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
-            {food.map((item) => (
-                <div
-                key={item.id}
-                className="bg-white/60 backdrop-blur-lg border border-red-100 rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.03]"
+        {/* Category Filter UI */}
+        <div className="max-w-4xl mx-auto mb-10">
+          <h2 className="text-xl font-semibold mb-4">Select a Category:</h2>
+          <div className="flex flex-wrap gap-2 bg-white p-3 rounded-lg shadow-sm border border-gray-200">
+            {['All', 'Technology', 'Design', 'Marketing', 'Business'].map((cat) => (
+              <div key={cat} className="flex items-center">
+                <input type="radio" id={cat} name="category" className="peer hidden" defaultChecked={cat === 'All'} />
+                <label
+                  htmlFor={cat}
+                  className="block px-4 py-2 text-sm font-medium text-gray-700 rounded-md cursor-pointer
+                             peer-checked:bg-red-500 peer-checked:text-white
+                             hover:bg-red-100 hover:text-red-600 transition-colors"
                 >
-                <img
-                    src={item.image}
-                    alt={item.name}
-                    onClick={() => navigate(`/food/details/`,{state:{item}})}
-                    className="w-full h-44 object-cover rounded-t-2xl"
-                />
-                <div className="p-5">
-                    <p onClick={() => navigate(`/food/details/`,{state:{item}})} className="text-lg font-semibold text-gray-900 mb-2 line-clamp-1">
-                    {item.name}
-                    </p>
-                    <p className="text-red-500 text-sm font-medium mb-4">
-                    {item.price} TK
-                    </p>
-                    <button onClick={() => navigate(`/food/add-to-card/`,{state:{item}})} className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg font-semibold text-sm tracking-wide transition-all duration-300">
-                    Add to Order
-                    </button>
-                </div>
-                </div>
+                  {cat}
+                </label>
+              </div>
             ))}
-            </div>
+          </div>
         </div>
+
+        {/* Food Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {food.map((item) => (
+            <div
+              key={item.id}
+              className="bg-white border border-red-100 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-transform duration-200 hover:scale-105"
+            >
+              <img
+                src={item.image}
+                alt={item.name}
+                onClick={() => navigate(`/food/details/`, { state: { item } })}
+                className="w-full h-36 object-cover cursor-pointer"
+              />
+              <div className="p-4">
+                <p
+                  onClick={() => navigate(`/food/details/`, { state: { item } })}
+                  className="text-base font-semibold text-gray-800 mb-1 cursor-pointer line-clamp-1"
+                >
+                  {item.name}
+                </p>
+                <p className="text-red-500 text-sm font-medium mb-3">৳{item.price}</p>
+                <button
+                  onClick={() => navigate(`/food/add-to-card/`, { state: { item } })}
+                  className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-md text-sm font-medium transition"
+                >
+                  Add to Order
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {error && <p className="text-red-500 text-center mt-4">{error.message || error}</p>}
+      </div>
     </div>
+  );
+};
 
-
-  )
-}
-
-export default Food
+export default Food;
