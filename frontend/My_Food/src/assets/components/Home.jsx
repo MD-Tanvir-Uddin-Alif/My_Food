@@ -1,6 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const Home = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await axios.get('http://127.0.0.1:8000/api/category/');
+        setCategories(res.data);
+      } catch (err) {
+        console.error('Failed to fetch categories', err);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   return (
     <div>
       <style
@@ -39,6 +55,30 @@ const Home = () => {
             .fade-slider img:nth-child(3) {
               animation-delay: 6s;
             }
+
+            .blurred::before {
+              content: '';
+              position: absolute;
+              inset: 0;
+              backdrop-filter: blur(8px);
+              background-color: rgba(255, 0, 0, 0.3); /* red tint */
+              transition: backdrop-filter 0.3s ease, background-color 0.3s ease;
+              z-index: 1;
+            }
+
+            .blurred:hover::before {
+              backdrop-filter: blur(0);
+              background-color: rgba(255, 0, 0, 0); /* remove red tint */
+            }
+
+            .category-text {
+              z-index: 2;
+              transition: opacity 0.3s ease;
+            }
+
+            .blurred:hover .category-text {
+              opacity: 0;
+            }
           `,
         }}
       />
@@ -64,49 +104,23 @@ const Home = () => {
       </section>
 
       <section className="px-6 py-16 bg-gray-100">
-        <h2 className="text-3xl font-semibold text-center mb-12">Explore Our Services</h2>
+        <h2 className="text-3xl font-semibold text-center mb-12">Explore Our Categories</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          <div
-            className="relative group overflow-hidden rounded-lg h-64 cursor-pointer transition-all duration-500"
-            style={{
-              backgroundImage: "url('https://picsum.photos/seed/card1/400/300')",
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
-          >
-            <div className="absolute inset-0 bg-red-900 bg-opacity-50 backdrop-blur-sm group-hover:bg-transparent transition-all duration-300" />
-            <div className="absolute inset-0 flex items-center justify-center z-10 group-hover:opacity-0 transition-opacity duration-300">
-              <h3 className="text-white text-xl font-bold">Service One</h3>
+          {categories.map((category) => (
+            <div
+              key={category.id}
+              className="relative group rounded-lg h-64 cursor-pointer blurred overflow-hidden transition-all duration-500"
+              style={{
+                backgroundImage: `url(${category.food_image})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            >
+              <div className="absolute inset-0 flex items-center justify-center category-text">
+                <h3 className="text-white text-xl font-bold">{category.name}</h3>
+              </div>
             </div>
-          </div>
-
-          <div
-            className="relative group overflow-hidden rounded-lg h-64 cursor-pointer transition-all duration-500"
-            style={{
-              backgroundImage: "url('https://picsum.photos/seed/card2/400/300')",
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
-          >
-            <div className="absolute inset-0 bg-red-900 bg-opacity-50 backdrop-blur-sm group-hover:bg-transparent transition-all duration-300" />
-            <div className="absolute inset-0 flex items-center justify-center z-10 group-hover:opacity-0 transition-opacity duration-300">
-              <h3 className="text-white text-xl font-bold">Service Two</h3>
-            </div>
-          </div>
-
-          <div
-            className="relative group overflow-hidden rounded-lg h-64 cursor-pointer transition-all duration-500"
-            style={{
-              backgroundImage: "url('https://picsum.photos/seed/card3/400/300')",
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
-          >
-            <div className="absolute inset-0 bg-red-900 bg-opacity-50 backdrop-blur-sm group-hover:bg-transparent transition-all duration-300" />
-            <div className="absolute inset-0 flex items-center justify-center z-10 group-hover:opacity-0 transition-opacity duration-300">
-              <h3 className="text-white text-xl font-bold">Service Three</h3>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
     </div>
