@@ -13,7 +13,6 @@ const Home = () => {
         console.error('Failed to fetch categories', err);
       }
     };
-
     fetchCategories();
   }, []);
 
@@ -23,15 +22,10 @@ const Home = () => {
         dangerouslySetInnerHTML={{
           __html: `
             @keyframes fade {
-              0%, 32% { opacity: 1; z-index: 1; }
-              33%, 98% { opacity: 0; z-index: 0; }
-              99%, 100% { opacity: 1; z-index: 1; }
-            }
-
-            .fade-slider {
-              position: relative;
-              width: 100%;
-              height: 320px; /* Fixed height */
+              0% { opacity: 1; z-index: 2; }
+              33.33% { opacity: 0; z-index: 1; }
+              66.66% { opacity: 0; z-index: 1; }
+              100% { opacity: 1; z-index: 2; }
             }
 
             .fade-slider img {
@@ -40,10 +34,14 @@ const Home = () => {
               left: 0;
               width: 100%;
               height: 100%;
-              object-fit: cover;
-              animation: fade 9s linear infinite;
+              object-fit: contain;
+              opacity: 0;
+              animation: fade 12s infinite;
               transition: opacity 1s ease;
-              border-radius: 0.5rem;
+            }
+
+            .fade-slider img:nth-child(1) {
+              animation-delay: 0s;
             }
 
             .fade-slider img:nth-child(2) {
@@ -80,6 +78,7 @@ const Home = () => {
         }}
       />
 
+      {/* Hero Section */}
       <section className="flex flex-col md:flex-row items-center justify-between px-6 py-20 max-w-7xl mx-auto">
         <div className="md:w-1/2 mb-10 md:mb-0">
           <section className="text-center md:text-left">
@@ -89,14 +88,11 @@ const Home = () => {
             <p className="mt-6 text-lg md:text-xl">
               <span className="text-red-600">Hits different.</span> Don’t miss out.
             </p>
-            <button className="mt-6 bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700 transition">
-              Learn More
-            </button>
           </section>
         </div>
 
-        <div className="md:w-1/2 relative w-full max-w-md overflow-hidden">
-          <div className="fade-slider">
+        <div className="md:w-1/2 relative w-full max-w-md h-64 md:h-80 overflow-hidden">
+          <div className="fade-slider w-full h-full relative">
             <img src="/images/swarma.png" alt="Slide 1" />
             <img src="/images/ICE cream.png" alt="Slide 2" />
             <img src="/images/Shake.png" alt="Slide 3" />
