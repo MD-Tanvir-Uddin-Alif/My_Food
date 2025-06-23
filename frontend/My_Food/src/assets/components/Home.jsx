@@ -23,18 +23,15 @@ const Home = () => {
         dangerouslySetInnerHTML={{
           __html: `
             @keyframes fade {
-              0%   { opacity: 1; z-index: 1; }
-              32%  { opacity: 1; z-index: 1; }
-              33%  { opacity: 0; z-index: 0; }
-              98%  { opacity: 0; z-index: 0; }
-              99%  { opacity: 1; z-index: 1; }
-              100% { opacity: 1; z-index: 1; }
+              0%, 32% { opacity: 1; z-index: 1; }
+              33%, 98% { opacity: 0; z-index: 0; }
+              99%, 100% { opacity: 1; z-index: 1; }
             }
 
             .fade-slider {
               position: relative;
               width: 100%;
-              height: 100%;
+              height: 320px; /* Fixed height */
             }
 
             .fade-slider img {
@@ -46,6 +43,7 @@ const Home = () => {
               object-fit: cover;
               animation: fade 9s linear infinite;
               transition: opacity 1s ease;
+              border-radius: 0.5rem;
             }
 
             .fade-slider img:nth-child(2) {
@@ -61,14 +59,13 @@ const Home = () => {
               position: absolute;
               inset: 0;
               backdrop-filter: blur(8px);
-              background-color: rgba(255, 0, 0, 0.3); /* red tint */
               transition: backdrop-filter 0.3s ease, background-color 0.3s ease;
               z-index: 1;
             }
 
             .blurred:hover::before {
               backdrop-filter: blur(0);
-              background-color: rgba(255, 0, 0, 0); /* remove red tint */
+              background-color: rgba(0, 0, 0, 0);
             }
 
             .category-text {
@@ -85,20 +82,24 @@ const Home = () => {
 
       <section className="flex flex-col md:flex-row items-center justify-between px-6 py-20 max-w-7xl mx-auto">
         <div className="md:w-1/2 mb-10 md:mb-0">
-          <h1 className="text-4xl font-bold mb-4">Welcome to Our Website</h1>
-          <p className="text-lg mb-6 text-gray-700">
-            Discover amazing features and services designed to elevate your experience. We're here to help you succeed.
-          </p>
-          <button className="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700 transition">
-            Learn More
-          </button>
+          <section className="text-center md:text-left">
+            <h1 className="text-4xl md:text-5xl font-bold leading-tight">
+              Welcome to <span className="text-red-600">My Food</span> Where Every <span className="text-red-600">Bite</span> Wins!
+            </h1>
+            <p className="mt-6 text-lg md:text-xl">
+              <span className="text-red-600">Hits different.</span> Don’t miss out.
+            </p>
+            <button className="mt-6 bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700 transition">
+              Learn More
+            </button>
+          </section>
         </div>
 
-        <div className="md:w-1/2 relative w-full max-w-md h-64 md:h-80 overflow-hidden rounded-lg shadow-lg">
+        <div className="md:w-1/2 relative w-full max-w-md overflow-hidden">
           <div className="fade-slider">
-            <img src="https://picsum.photos/seed/slider1/800/600" alt="Slide 1" />
-            <img src="https://picsum.photos/seed/slider2/800/600" alt="Slide 2" />
-            <img src="https://picsum.photos/seed/slider3/800/600" alt="Slide 3" />
+            <img src="/images/swarma.png" alt="Slide 1" />
+            <img src="/images/ICE cream.png" alt="Slide 2" />
+            <img src="/images/Shake.png" alt="Slide 3" />
           </div>
         </div>
       </section>
