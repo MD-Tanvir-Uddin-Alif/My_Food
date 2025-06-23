@@ -69,21 +69,24 @@ const NavBar = () => {
   return (
     <div>
       <nav
-        className={`fixed top-0 w-full z-50 transition-all duration-300
-          bg-white/80 backdrop-blur-lg
-          ${scrolledToTop ? 'shadow-none' : 'shadow-md'}`}
+        className={`fixed top-0 w-full z-50 transition-all duration-300 bg-white/80 backdrop-blur-lg ${
+          scrolledToTop ? 'shadow-none' : 'shadow-md'
+        }`}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between py-3 px-6">
-          <div>
+          <div className="flex items-center space-x-2">
             <img className="h-12 w-12" src="/images/fork.png" alt="Logo" />
+            <span className="text-xl font-bold text-gray-900">
+              My <span className="text-red-600">Food</span>
+            </span>
           </div>
 
-          <div className="flex items-center space-x-6">
+          <div className="flex items-center space-x-8">
             <NavLink
               to="/"
               className={({ isActive }) =>
-                `font-medium text-sm transition ${
-                  isActive ? 'text-red-500' : 'text-black'
+                `font-semibold text-base transition ${
+                  isActive ? 'text-red-600' : 'text-gray-700'
                 }`
               }
             >
@@ -92,8 +95,8 @@ const NavBar = () => {
             <NavLink
               to="/food/"
               className={({ isActive }) =>
-                `font-medium text-sm transition ${
-                  isActive ? 'text-red-500' : 'text-black'
+                `font-semibold text-base transition ${
+                  isActive ? 'text-red-600' : 'text-gray-700'
                 }`
               }
             >
@@ -102,8 +105,8 @@ const NavBar = () => {
             <NavLink
               to="/food/add-to-card/"
               className={({ isActive }) =>
-                `font-medium text-sm transition ${
-                  isActive ? 'text-red-500' : 'text-black'
+                `font-semibold text-base transition ${
+                  isActive ? 'text-red-600' : 'text-gray-700'
                 }`
               }
             >
@@ -122,7 +125,7 @@ const NavBar = () => {
                 />
 
                 {dropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-xl py-2">
+                  <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-xl py-2 z-10">
                     <Link
                       to="/profile/"
                       className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
@@ -140,7 +143,7 @@ const NavBar = () => {
               </div>
             ) : (
               <NavLink to="/login/">
-                <button className="rounded-md px-4 py-2 text-black text-sm font-medium hover:bg-red-500 hover:text-white transition">
+                <button className="rounded-md px-5 py-2 bg-red-600 text-white text-sm font-medium hover:bg-red-700 transition">
                   Login
                 </button>
               </NavLink>
@@ -149,7 +152,6 @@ const NavBar = () => {
         </div>
       </nav>
 
-      {/* Spacer so page content doesn’t hide under navbar */}
       <div className="h-20"></div>
     </div>
   );

@@ -21,11 +21,11 @@ const Home = () => {
       <style
         dangerouslySetInnerHTML={{
           __html: `
-            @keyframes fade {
-              0% { opacity: 1; z-index: 2; }
-              33.33% { opacity: 0; z-index: 1; }
-              66.66% { opacity: 0; z-index: 1; }
-              100% { opacity: 1; z-index: 2; }
+            @keyframes slide {
+              0% { transform: translateX(100%); opacity: 0; z-index: 1; }
+              33.33% { transform: translateX(0); opacity: 1; z-index: 2; }
+              66.66% { transform: translateX(-100%); opacity: 0; z-index: 1; }
+              100% { transform: translateX(100%); opacity: 0; z-index: 1; }
             }
 
             .fade-slider img {
@@ -36,7 +36,9 @@ const Home = () => {
               height: 100%;
               object-fit: contain;
               opacity: 0;
-              animation: fade 12s infinite;
+              transform: translateX(100%);
+              animation: slide 12s infinite;
+              animation-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1.0);
               transition: opacity 1s ease;
             }
 
@@ -45,11 +47,11 @@ const Home = () => {
             }
 
             .fade-slider img:nth-child(2) {
-              animation-delay: 3s;
+              animation-delay: 4s;
             }
 
             .fade-slider img:nth-child(3) {
-              animation-delay: 6s;
+              animation-delay: 8s;
             }
 
             .blurred::before {
@@ -78,7 +80,6 @@ const Home = () => {
         }}
       />
 
-      {/* Hero Section */}
       <section className="flex flex-col md:flex-row items-center justify-between px-6 py-20 max-w-7xl mx-auto">
         <div className="md:w-1/2 mb-10 md:mb-0">
           <section className="text-center md:text-left">
