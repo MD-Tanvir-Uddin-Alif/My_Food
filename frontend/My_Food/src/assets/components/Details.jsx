@@ -1,8 +1,9 @@
 import React from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const Details = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const item = location.state?.item; 
   return (
     <div>
@@ -31,7 +32,9 @@ const Details = () => {
 
                 <div>
                     <p class="text-3xl font-bold text-red-600 mb-3">{item.price} Tk</p>
-                    <button class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg">
+                    <button
+                    onClick={() => navigate(`/food/add-to-card/`, { state: { item } })}
+                    class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg">
                     Add to Cart
                     </button>
                 </div>
