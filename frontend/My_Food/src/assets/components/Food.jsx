@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axiosPublic from '../../utils/axiospublic';
 import { useNavigate } from 'react-router-dom';
+
 
 const Food = () => {
   const [food, setFood] = useState([]);
@@ -15,8 +16,8 @@ const Food = () => {
     const loadData = async () => {
       try {
         const [foodRes, catRes] = await Promise.all([
-          axios.get('http://127.0.0.1:8000/api/food/'),
-          axios.get('http://127.0.0.1:8000/api/category/')
+          axiosPublic.get('/api/food/'),
+          axiosPublic.get('/api/category/')
         ]);
 
         setFood(foodRes.data);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import axios from 'axios';
+import axiosPublic from '../../utils/axiospublic';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -54,7 +54,7 @@ const Register = () => {
         });
 
 
-          const responce = await axios.post(`http://127.0.0.1:8000/api/user/register/`,formdatatosend,{
+          const responce = await axiosPublic.post(`/api/user/register/`,formdatatosend,{
             headers: {
               "Content-Type": 'multipart/form-data',
             },

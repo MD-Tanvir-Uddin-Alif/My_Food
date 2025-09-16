@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axiosPublic from '../../utils/axiospublic';
+
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
@@ -7,7 +8,7 @@ const Home = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get('http://127.0.0.1:8000/api/category/');
+        const res = await axiosPublic.get('/api/category/');
         setCategories(res.data);
       } catch (err) {
         console.error('Failed to fetch categories', err);
