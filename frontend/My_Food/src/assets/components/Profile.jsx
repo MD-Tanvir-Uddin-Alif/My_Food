@@ -14,6 +14,7 @@ const Profile = () => {
       try {
         const response = await axiosInstance.get('api/user/profile/');
         setProfile(response.data);
+        console.log(response.data);
         localStorage.setItem('img', response.data.profile_image);
       } catch (err) {
         setError(err.response?.data?.message || 'Something went wrong');
@@ -82,7 +83,7 @@ const Profile = () => {
             </Link>
           </div>
 
-          {role === 'ADMIN' && (
+          {profile.role === 'ADMIN' && (
             <Link to="/admin/">
               <p className="text-lg font-semibold text-red-600 mb-4">
                 Manage Product
