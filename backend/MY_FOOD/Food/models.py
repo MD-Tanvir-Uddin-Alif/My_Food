@@ -16,7 +16,8 @@ class FoodModel(models.Model):
     description = models.TextField(blank=True,null=True)
     price = models.DecimalField(max_digits=8, decimal_places=2)
     category = models.ForeignKey(CategoryModel, on_delete=models.SET_NULL, null=True)
-    image = models.ImageField(upload_to='food_images/', blank=True, null=False)
+    # image = models.ImageField(upload_to='food_images/', blank=True, null=False)
+    image = CloudinaryField('image',folder='food_images', blank=True, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

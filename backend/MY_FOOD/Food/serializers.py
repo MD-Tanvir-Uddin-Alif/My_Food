@@ -19,7 +19,12 @@ class FoodSerializers(serializers.ModelSerializer):
         source='category',
         write_only=True
     )
+    image_url = serializers.SerializerMethodField()
+    
     
     class Meta:
         model = FoodModel
-        fields = ['id', 'name', 'description', 'price', 'image', 'created_at', 'updated_at', 'category', 'category_id']
+        fields = ['id', 'name', 'description', 'price', 'image', 'image_url', 'created_at', 'updated_at', 'category', 'category_id']
+    
+    def get_image_url(self, obj):
+        return obj.image.url if obj.image else None

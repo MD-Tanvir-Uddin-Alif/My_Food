@@ -73,7 +73,7 @@ const ManageProduct = () => {
             className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col justify-between"
           >
             <img
-              src={item.image}
+              src={item.image_url}
               alt={item.name}
               className="w-full h-40 object-cover"
             />

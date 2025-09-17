@@ -102,7 +102,7 @@ const Food = () => {
               className="bg-white border border-red-100 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-transform duration-200 hover:scale-105"
             >
               <img
-                src={item.image}
+                src={item.image_url}
                 alt={item.name}
                 onClick={() => navigate(`/food/details/`, { state: { item } })}
                 className="w-full h-36 object-cover cursor-pointer"
