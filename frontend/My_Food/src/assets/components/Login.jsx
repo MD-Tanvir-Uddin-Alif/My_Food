@@ -1,8 +1,11 @@
 import axios from 'axios';
+import { ImageOff } from 'lucide-react';
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
+import axiosPublic from '../../utils/axiospublic';
 import 'react-toastify/dist/ReactToastify.css';
+import axiosInstance from '../../utils/axiosInstance';
 
 
 const Login = () => {
@@ -26,7 +29,7 @@ const Login = () => {
         console.log(fromData)
 
         try {
-            const response = await axios.post(`http://127.0.0.1:8000/api/user/login/`,{
+            const response = await axiosPublic.post(`/api/user/login/`,{
                 email: fromData.email,
                 password: fromData.password
             });
@@ -39,11 +42,7 @@ const Login = () => {
             localStorage.setItem('accessToken', access);
             localStorage.setItem('role', role);
 
-            const profileRes = await axios.get('http://127.0.0.1:8000/api/user/profile/', {
-                headers: {
-                    Authorization: `Bearer ${access}`
-                }
-            });
+            const profileRes = await axiosInstance.get('/api/user/profile/')
 
             localStorage.setItem('img', profileRes.data.profile_image);
 
