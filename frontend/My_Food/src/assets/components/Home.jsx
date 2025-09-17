@@ -110,7 +110,7 @@ const Home = () => {
               key={category.id}
               className="relative group rounded-lg h-64 cursor-pointer blurred overflow-hidden transition-all duration-500"
               style={{
-                backgroundImage: `url(${category.food_image})`,
+                backgroundImage: `url(${category.food_image_url})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
               }}

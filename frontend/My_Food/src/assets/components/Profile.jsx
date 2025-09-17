@@ -12,7 +12,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const response = await axiosInstance.get('api/user/profile/');
+        const response = await axiosInstance.get('/api/user/profile/');
         setProfile(response.data);
         console.log(response.data);
         localStorage.setItem('img', response.data.profile_image);

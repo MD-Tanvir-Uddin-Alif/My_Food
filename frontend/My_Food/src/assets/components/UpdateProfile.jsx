@@ -31,7 +31,7 @@ const UpdateProfile = () => {
       });
 
       const response = await axiosInstance.patch(
-        '/api/user/profile/update/',
+        'api/user/profile/update/',
         formdatatosend,
         {
           headers: {

@@ -69,7 +69,7 @@ const ManageCategory = () => {
             {product.map((item)=>(
                 <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow-sm">
                 <div className="flex items-center gap-4">
-                    <img src={item.food_image} alt={item.name} className="w-16 h-16 object-cover rounded-md" />
+                    <img src={item.food_image_url} alt={item.name} className="w-16 h-16 object-cover rounded-md" />
                     <h3 className="text-lg font-medium text-red-700">{item.name}</h3>
                 </div>
                 <div className="flex gap-2">
