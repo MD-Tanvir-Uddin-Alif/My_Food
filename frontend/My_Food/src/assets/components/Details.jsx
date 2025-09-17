@@ -12,7 +12,7 @@ const Details = () => {
                 
                 <div className="md:w-1/2">
                 <img 
-                    src={item.image}     
+                    src={item.image_url}     
                     alt="Product Image" 
                     className="w-75 h-75 rounded-2xl object-cover shadow-md hover:shadow-lg transition-shadow duration-300"/>
                 </div>
