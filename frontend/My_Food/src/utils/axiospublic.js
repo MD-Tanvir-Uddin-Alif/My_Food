@@ -5,7 +5,7 @@ const baseURL = 'https://my-food-nju8.onrender.com';
 
 const axiosPublic = axios.create({
   baseURL,
-  timeout: 15000,
+  timeout: 80000,
   headers: {
     'Content-Type': 'application/json',
   },
