@@ -217,7 +217,7 @@ const AddCard = () => {
               />
               <span>Cash on Delivery</span>
             </label>
-            <label className="flex items-center space-x-2 p-3 border rounded-lg cursor-pointer hover:bg-red-50">
+            {/* <label className="flex items-center space-x-2 p-3 border rounded-lg cursor-pointer hover:bg-red-50">
               <input
                 type="radio"
                 name="payment"
@@ -227,7 +227,7 @@ const AddCard = () => {
                 className="text-red-600"
               />
               <span>Online Payment</span>
-            </label>
+            </label> */}
           </div>
         </div>
 
