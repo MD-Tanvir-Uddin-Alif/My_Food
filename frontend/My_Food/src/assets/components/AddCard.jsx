@@ -2,13 +2,14 @@ import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axiosInstance from '../../utils/axiosInstance';
+
 
 const AddCard = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const newItem = location.state?.item;
 
-  // 🧩 Load items from localStorage initially
   const [cartItems, setCartItems] = useState(() => {
     const stored = localStorage.getItem('cart');
     return stored ? JSON.parse(stored) : [];
@@ -17,12 +18,10 @@ const AddCard = () => {
   const [paymentMethod, setPaymentMethod] = useState('cash');
   const addRef = useRef(false);
 
-  // 🧠 Save cart to localStorage when updated
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
-  // 🛒 Add new item once
   useEffect(() => {
     if (newItem && !addRef.current) {
       addRef.current = true;
@@ -44,7 +43,6 @@ const AddCard = () => {
     }
   }, [newItem, navigate, location.pathname]);
 
-  // ♻️ Memoized calculations
   const subtotal = useMemo(() => {
     return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   }, [cartItems]);
@@ -52,7 +50,6 @@ const AddCard = () => {
   const tax = useMemo(() => parseFloat((subtotal * 0.05).toFixed(2)), [subtotal]);
   const total = useMemo(() => subtotal + tax, [subtotal, tax]);
 
-  // ♻️ Memoized functions
   const removeItem = useCallback((id) => {
     setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
   }, []);
@@ -96,23 +93,17 @@ const AddCard = () => {
     };
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/user/orders/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-        body: JSON.stringify(orderData),
-      });
+      const response = await axiosInstance.post("/api/user/orders/", orderData);
 
-      if (response.ok) {
+      if (response.ok || response.status === 200 || response.status === 201) {
         toast.success("Order placed successfully!");
         setCartItems([]);
         localStorage.removeItem('cart');
         navigate('/profile/');
       } else {
-        const error = await response.json();
-        console.error(error);
+        // const error = await response.json();
+        // console.error(error);
+        // console.log(response);
         toast.error("Failed to place order.");
       }
     } catch (err) {
