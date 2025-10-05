@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -8,6 +8,7 @@ const AddCard = () => {
   const navigate = useNavigate();
   const newItem = location.state?.item;
 
+  // 🧩 Load items from localStorage initially
   const [cartItems, setCartItems] = useState(() => {
     const stored = localStorage.getItem('cart');
     return stored ? JSON.parse(stored) : [];
@@ -16,10 +17,12 @@ const AddCard = () => {
   const [paymentMethod, setPaymentMethod] = useState('cash');
   const addRef = useRef(false);
 
+  // 🧠 Save cart to localStorage when updated
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
+  // 🛒 Add new item once
   useEffect(() => {
     if (newItem && !addRef.current) {
       addRef.current = true;
@@ -41,11 +44,20 @@ const AddCard = () => {
     }
   }, [newItem, navigate, location.pathname]);
 
-  const removeItem = (id) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
-  };
+  // ♻️ Memoized calculations
+  const subtotal = useMemo(() => {
+    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  }, [cartItems]);
 
-  const decreaseQty = (id) => {
+  const tax = useMemo(() => parseFloat((subtotal * 0.05).toFixed(2)), [subtotal]);
+  const total = useMemo(() => subtotal + tax, [subtotal, tax]);
+
+  // ♻️ Memoized functions
+  const removeItem = useCallback((id) => {
+    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  }, []);
+
+  const decreaseQty = useCallback((id) => {
     setCartItems((prevItems) =>
       prevItems
         .map((item) =>
@@ -53,24 +65,17 @@ const AddCard = () => {
         )
         .filter((item) => item.quantity > 0)
     );
-  };
+  }, []);
 
-  const increaseQty = (id) => {
+  const increaseQty = useCallback((id) => {
     setCartItems((prevItems) =>
       prevItems.map((item) =>
         item.id === id ? { ...item, quantity: item.quantity + 1 } : item
       )
     );
-  };
+  }, []);
 
-  const subtotal = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
-  const tax = parseFloat((subtotal * 0.05).toFixed(2));
-  const total = subtotal + tax;
-
-  const handleCheckout = async () => {
+  const handleCheckout = useCallback(async () => {
     if (cartItems.length === 0) {
       toast.error("Please add at least one item to your cart.");
       return;
@@ -83,7 +88,7 @@ const AddCard = () => {
       tax,
       total,
       status: "paid",
-      items: cartItems.map(item => ({
+      items: cartItems.map((item) => ({
         food: item.id,
         quantity: item.quantity,
         price: item.price,
@@ -95,7 +100,7 @@ const AddCard = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
         },
         body: JSON.stringify(orderData),
       });
@@ -114,13 +119,15 @@ const AddCard = () => {
       console.error(err);
       toast.error("Something went wrong.");
     }
-  };
+  }, [cartItems, paymentMethod, subtotal, tax, total, navigate]);
 
+  // 🧾 UI Section
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
       <ToastContainer />
       <h1 className="text-4xl font-bold text-center mb-12 text-red-600">Your Cart</h1>
 
+      {/* Cart Items */}
       <div className="space-y-6">
         {cartItems.map((item) => (
           <div
@@ -138,6 +145,7 @@ const AddCard = () => {
                 <p className="text-sm text-gray-500">{item.price} TK each</p>
               </div>
             </div>
+
             <div className="flex items-center space-x-3">
               <button
                 onClick={() => decreaseQty(item.id)}
@@ -176,6 +184,7 @@ const AddCard = () => {
         ))}
       </div>
 
+      {/* Add More */}
       <div className="mt-8 text-center">
         <button
           onClick={() => navigate('/food/')}
@@ -185,6 +194,7 @@ const AddCard = () => {
         </button>
       </div>
 
+      {/* Order Summary */}
       <div className="mt-12 bg-white p-6 rounded-2xl shadow-md">
         <h2 className="text-2xl font-semibold mb-4 text-gray-800">Order Summary</h2>
 
@@ -203,6 +213,7 @@ const AddCard = () => {
           </div>
         </div>
 
+        {/* Payment Method */}
         <div className="mt-6">
           <h3 className="font-medium mb-2 text-gray-800">Payment Method</h3>
           <div className="space-y-3">
@@ -217,17 +228,6 @@ const AddCard = () => {
               />
               <span>Cash on Delivery</span>
             </label>
-            {/* <label className="flex items-center space-x-2 p-3 border rounded-lg cursor-pointer hover:bg-red-50">
-              <input
-                type="radio"
-                name="payment"
-                value="online"
-                checked={paymentMethod === 'online'}
-                onChange={(e) => setPaymentMethod(e.target.value)}
-                className="text-red-600"
-              />
-              <span>Online Payment</span>
-            </label> */}
           </div>
         </div>
 
