@@ -35,7 +35,7 @@ const Profile = () => {
       <div className="max-w-4xl w-full bg-white shadow-xl rounded-2xl p-8 grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="flex flex-col items-center justify-center md:col-span-1">
           <img
-            src={profile.profile_image}
+            src={profile.profile_image_url}
             alt="Profile"
             className="w-40 h-40 rounded-full shadow-lg object-cover"
           />

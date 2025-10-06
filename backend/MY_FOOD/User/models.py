@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from Food.models import FoodModel
+from cloudinary.models import CloudinaryField
 # Create your models here.
 
 class CustomUser(AbstractUser):
@@ -19,7 +20,8 @@ class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
     phone_number = models.CharField(max_length=12, blank=True)
     gender = models.CharField(max_length=1, choices=GENDER, blank=True)
-    profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
+    # profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
+    profile_image = CloudinaryField('profile_image',folder='profile_images/', blank=True, null=True)
     address = models.TextField()
     role = models.CharField(max_length=20, choices=ROLE, default='Customer')
     account_created_at = models.DateTimeField(auto_now_add=True)
